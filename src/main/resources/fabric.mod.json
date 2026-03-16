@@ -1,5 +1,4 @@
-{
-	"schemaVersion": 1,
+{	"schemaVersion": 1,
 	"id": "race-mod",
 	"version": "${version}",
 	"name": "race-mod",
@@ -17,6 +16,9 @@
 	"entrypoints": {
 		"main": [
 			"net.un2rws1.racemod.Racemod"
+		],
+		"client": [
+			"net.un2rws1.racemod.RacemodClient"
 		],
 		"fabric-datagen": [
 			"net.un2rws1.racemod.RacemodDataGenerator"
