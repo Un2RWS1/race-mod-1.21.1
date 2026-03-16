@@ -50,6 +50,13 @@ public final class ClassManager {
         Optional<PlayerClass> resolved = PlayerClass.byId(classId);
         return resolved.orElse(null);
     }
+    public static PlayerClass getPlayerClass(PlayerEntity player) {
+        if (!(player instanceof ServerPlayerEntity serverPlayer)) {
+            return null;
+        }
+
+        return getPlayerClass(serverPlayer);
+    }
 
     //buffs and all that
 
@@ -62,6 +69,9 @@ public final class ClassManager {
         }
         if (getPlayerClass((ServerPlayerEntity) player) == PlayerClass.CHINESE){
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.LUCK, 220, 1, false, false));
+        }
+        if (getPlayerClass((ServerPlayerEntity) player) == PlayerClass.JEW){
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.HERO_OF_THE_VILLAGE, 220, 0, false, false));
         }
 
         //======================================Chinese damage ============================================================
