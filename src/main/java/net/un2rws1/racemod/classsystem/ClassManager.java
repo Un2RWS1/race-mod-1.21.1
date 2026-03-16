@@ -1,6 +1,5 @@
 package net.un2rws1.racemod.classsystem;
 
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,12 +12,13 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.Optional;
+
 
 public final class ClassManager {
     private static final Identifier HEALTH_MODIFIER_ID = Identifier.of("race-mod", "class_health_bonus");
     private static final Identifier SPEED_MODIFIER_ID = Identifier.of("race-mod", "class_speed_bonus");
+    private static final Identifier ASIAN_DAMAGE_MODIFIER_ID = Identifier.of("race-mod", "mage_damage_reduction");
 
     private ClassManager() {
     }
@@ -53,9 +53,60 @@ public final class ClassManager {
     //buffs and all that
 
     public static void tickPlayer(PlayerEntity player) {
-            if (getPlayerClass((ServerPlayerEntity) player) == PlayerClass.MEXICAN) {
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, 220, 0, true, false));
+        PlayerClass playerClass = getPlayerClass((ServerPlayerEntity) player);
+        //==============================================effects==================================================
+        if (getPlayerClass((ServerPlayerEntity) player) == PlayerClass.MEXICAN) {
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, 220, 0, true, false));
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 220, 0, true, false));
+        }
+
+        //======================================Chinese damage ============================================================
+        if (playerClass == PlayerClass.CHINESE) {
+            var attribute = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+            if (attribute != null && attribute.getModifier(ASIAN_DAMAGE_MODIFIER_ID) == null) {
+
+                attribute.addPersistentModifier(
+                        new EntityAttributeModifier(
+                                ASIAN_DAMAGE_MODIFIER_ID,
+                                -0.15,
+                                EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+                        )
+                );
             }
+        }
+
+        //=====================================Passive abilities (testing)==========================
+
+
+        // ====================================effects immunity==========================================
+        if (getPlayerClass((ServerPlayerEntity) player) == PlayerClass.INDIAN) {
+            player.removeStatusEffect(StatusEffects.POISON);
+        }
+
+        //========================================FIXES BUGS OF RELOG AND CHANGING CLASS=======================
+        var attribute = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+
+        if (attribute != null) {
+
+            boolean isMage = getPlayerClass((ServerPlayerEntity) player) == PlayerClass.CHINESE;
+            boolean hasModifier = attribute.getModifier(ASIAN_DAMAGE_MODIFIER_ID) != null;
+
+            // Add modifier if Mage and not applied
+            if (isMage && !hasModifier) {
+                attribute.addPersistentModifier(
+                        new EntityAttributeModifier(
+                                ASIAN_DAMAGE_MODIFIER_ID,
+                                -0.15,
+                                EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+                        )
+                );
+            }
+
+            // Remove modifier if NOT Mage but still applied
+            if (!isMage && hasModifier) {
+                attribute.removeModifier(ASIAN_DAMAGE_MODIFIER_ID);
+            }
+        }
     }
 
 
@@ -151,6 +202,7 @@ public final class ClassManager {
                     maxHealth.addPersistentModifier(new EntityAttributeModifier(
                             HEALTH_MODIFIER_ID,
                             4,
+
                             EntityAttributeModifier.Operation.ADD_VALUE
                     ));
                 }
@@ -166,6 +218,7 @@ public final class ClassManager {
                 if (player.getHealth() > player.getMaxHealth()) {
                     player.setHealth(player.getMaxHealth());
                 }
+                player.heal(4.0F);
             }
 
             case INDIAN -> {
@@ -208,7 +261,7 @@ public final class ClassManager {
                 if (movementSpeed != null && movementSpeed.getModifier(SPEED_MODIFIER_ID) == null) {
                     movementSpeed.addPersistentModifier(new EntityAttributeModifier(
                             SPEED_MODIFIER_ID,
-                            0.05,
+                            0.03,
                             EntityAttributeModifier.Operation.ADD_VALUE
                     ));
                 }
