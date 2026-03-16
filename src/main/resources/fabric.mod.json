@@ -3,13 +3,13 @@
 	"id": "race-mod",
 	"version": "${version}",
 	"name": "race-mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Origins mod but with colors",
 	"authors": [
-		"Me!"
+		"Un2RWS1"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/Un2RWS1/race-mod-1.21.1"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/race-mod/icon.png",

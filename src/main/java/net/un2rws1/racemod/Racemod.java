@@ -2,6 +2,7 @@ package net.un2rws1.racemod;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.un2rws1.racemod.block.ModBlocks;
 import net.un2rws1.racemod.item.ModItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,6 @@ public class Racemod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ModItems.registerModItems();
-
+		ModBlocks.registerModBlocks();
 	}
 }
