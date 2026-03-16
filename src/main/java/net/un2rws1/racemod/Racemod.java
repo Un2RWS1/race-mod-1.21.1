@@ -12,6 +12,7 @@ import net.un2rws1.racemod.networking.ModNetworking;
 import net.un2rws1.racemod.sound.ModSounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import net.un2rws1.racemod.event.PlayerRespawnHandler;
 
 public class Racemod implements ModInitializer {
 	public static final String MOD_ID = "race-mod";
@@ -29,6 +30,7 @@ public class Racemod implements ModInitializer {
 		ClassAttachmentTypes.init();
 		ModNetworking.register();
 		PlayerJoinHandler.register();
+		PlayerRespawnHandler.register();
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
 				ClassCommand.register(dispatcher));
