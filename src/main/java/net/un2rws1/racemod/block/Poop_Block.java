@@ -62,7 +62,8 @@ public class Poop_Block extends Block {
 
 
                         if (time >= 100) {
-                            livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 60, 0));
+                            livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 120, 0));
+                            livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 120, 4));
                             ((ServerWorld) world).spawnParticles(
                                     ParticleTypes.SMOKE,
                                     entity.getX(), entity.getY() + 0.8, entity.getZ(),
