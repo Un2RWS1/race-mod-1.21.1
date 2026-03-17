@@ -42,8 +42,6 @@ public class ClassSelectionScreen extends Screen {
                             }
                     ).dimensions(x, buttonY, buttonWidth, buttonHeight).build()
             );
-
-
             index++;
         }
 

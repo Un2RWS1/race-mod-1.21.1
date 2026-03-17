@@ -45,13 +45,13 @@ public class Racemod implements ModInitializer {
 		PlayerJoinHandler.register();
 		PlayerRespawnHandler.register();
 
-		//classes (races) buffs defuffs and whatnot
+		//classes (races) buffs debuffs and whatnot
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
 				ClassManager.tickPlayer(player);
 			}
 		});
-		//classes food
+		//classes food, you cant eat certain food
 		UseItemCallback.EVENT.register((player, world, hand) -> {
 			ItemStack stack = player.getStackInHand(hand);
 			PlayerClass playerClass = ClassManager.getPlayerClass(player);

@@ -78,7 +78,7 @@ public final class ClassCommand {
 
                                             PlayerClass playerClass = PlayerClass.byId(classId).orElse(null);
                                             if (playerClass == null) {
-                                                context.getSource().sendError(Text.literal("Unknown class: " + classId));
+                                                context.getSource().sendError(Text.literal("Irrelevant Race: " + classId));
                                                 return 0;
                                             }
 

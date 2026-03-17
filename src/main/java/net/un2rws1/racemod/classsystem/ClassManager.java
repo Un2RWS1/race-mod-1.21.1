@@ -3,6 +3,9 @@ package net.un2rws1.racemod.classsystem;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.un2rws1.racemod.item.ModItems;
 import net.un2rws1.racemod.networking.OpenClassSelectionPayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
@@ -19,7 +22,7 @@ import java.util.Optional;
 public final class ClassManager {
     private static final Identifier HEALTH_MODIFIER_ID = Identifier.of("race-mod", "class_health_bonus");
     private static final Identifier SPEED_MODIFIER_ID = Identifier.of("race-mod", "class_speed_bonus");
-    private static final Identifier ASIAN_DAMAGE_MODIFIER_ID = Identifier.of("race-mod", "mage_damage_reduction");
+    private static final Identifier ASIAN_DAMAGE_MODIFIER_ID = Identifier.of("race-mod", "chinese_damage_reduction");
 
     private ClassManager() {
     }
@@ -95,6 +98,25 @@ public final class ClassManager {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 220, 2, false, false, false));
             }
         }
+        // ================================================Poop item dropping====================================
+        if (playerClass == PlayerClass.INDIAN) {
+            ClassState state = getState((ServerPlayerEntity) player);
+            int timer = state.getPoopTickTimer() + 1;
+
+            if (timer >= 6000) {
+                ItemStack stack = new ItemStack(ModItems.POOP, 1);
+
+                if (!player.getInventory().insertStack(stack)) {
+                    player.dropItem(new ItemStack(Items.IRON_INGOT, 1), false);
+                    }
+                player.sendMessage(Text.literal("You just pooped"), true);
+
+                timer = 0; // reset
+            }
+
+            state.setPoopTickTimer(timer);
+        }
+
 
         // ====================================effects immunity==========================================
         if (getPlayerClass((ServerPlayerEntity) player) == PlayerClass.INDIAN) {
@@ -106,10 +128,10 @@ public final class ClassManager {
 
         if (attribute != null) {
 
-            boolean isMage = getPlayerClass((ServerPlayerEntity) player) == PlayerClass.CHINESE;
+            boolean isChinese = getPlayerClass((ServerPlayerEntity) player) == PlayerClass.CHINESE;
             boolean hasModifier = attribute.getModifier(ASIAN_DAMAGE_MODIFIER_ID) != null;
 
-            if (isMage && !hasModifier) {
+            if (isChinese && !hasModifier) {
                 attribute.addPersistentModifier(
                         new EntityAttributeModifier(
                                 ASIAN_DAMAGE_MODIFIER_ID,
@@ -119,11 +141,12 @@ public final class ClassManager {
                 );
             }
 
-            if (!isMage && hasModifier) {
+            if (!isChinese && hasModifier) {
                 attribute.removeModifier(ASIAN_DAMAGE_MODIFIER_ID);
             }
         }
     }
+
 
 
 
@@ -144,7 +167,15 @@ public final class ClassManager {
         state.setSelectedClassId(chosenClass.getId());
 
         removeClassEffects(player);
+        if (chosenClass.getId().equalsIgnoreCase("jew")) {
+            ItemStack stack = new ItemStack(ModItems.HAVA_NAGILA_MUSIC_DISC, 1);
+
+            if (!player.getInventory().insertStack(stack)) {
+                player.dropItem(stack, false);
+            }
+        }
         applyClassEffects(player, chosenClass);
+
 
         player.sendMessage(Text.literal("You are now " + chosenClass.getDisplayName() ), false);
         return true;
@@ -155,6 +186,13 @@ public final class ClassManager {
         state.setSelectedClassId(newClass.getId());
 
         removeClassEffects(player);
+        if (newClass.getId().equalsIgnoreCase("jew")) {
+            ItemStack stack = new ItemStack(ModItems.HAVA_NAGILA_MUSIC_DISC, 1);
+
+            if (!player.getInventory().insertStack(stack)) {
+                player.dropItem(stack, false);
+            }
+        }
         applyClassEffects(player, newClass);
 
         player.sendMessage(Text.literal("Your race has been set to " + newClass.getDisplayName() + "."), false);

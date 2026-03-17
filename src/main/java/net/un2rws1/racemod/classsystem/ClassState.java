@@ -7,13 +7,26 @@ import org.jetbrains.annotations.Nullable;
 
 public class ClassState
 {
+    //tick counter
+    private int poopTickTimer = 0;
+
+    public int getPoopTickTimer() {
+        return poopTickTimer;
+    }
+
+    public void setPoopTickTimer(int value) {
+        this.poopTickTimer = value;
+    }
+
     private String selectedClassId; // null if none selected
 
     public boolean hasChosenClass() {
+
         return selectedClassId != null && !selectedClassId.isBlank();
     }
 
     public @Nullable String getSelectedClassId() {
+
         return selectedClassId;
     }
 
@@ -22,6 +35,7 @@ public class ClassState
     }
 
     public void clear() {
+
         this.selectedClassId = null;
     }
     public static final Codec<ClassState> CODEC = RecordCodecBuilder.create(instance -> instance.group(
