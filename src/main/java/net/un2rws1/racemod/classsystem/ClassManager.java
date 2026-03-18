@@ -1,10 +1,14 @@
 package net.un2rws1.racemod.classsystem;
 
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.UnbreakableComponent;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.un2rws1.racemod.item.ModItems;
 import net.un2rws1.racemod.item.PoopItem;
 import net.un2rws1.racemod.networking.OpenClassSelectionPayload;
@@ -63,6 +67,60 @@ public final class ClassManager {
     }
 
     //buffs and all that
+    //==========================kippah must be always worn=================================
+    public static ItemStack createKippah() {
+        ItemStack stack = new ItemStack(ModItems.KIPPAH);
+
+        stack.set(DataComponentTypes.UNBREAKABLE, new UnbreakableComponent(false));
+
+        return stack;
+    }
+    private static void ensureKippah(ServerPlayerEntity player) {
+        PlayerClass playerClass = getPlayerClass(player);
+        ItemStack headStack = player.getEquippedStack(EquipmentSlot.HEAD);
+        boolean isJew = playerClass == PlayerClass.JEW;
+
+        if (isJew) {
+            for (int i = 0; i < 36; i++) {
+                ItemStack stack = player.getInventory().getStack(i);
+                if (stack.isOf(ModItems.KIPPAH)) {
+                    player.getInventory().setStack(i, ItemStack.EMPTY);
+                }
+            }
+
+            if (player.getOffHandStack().isOf(ModItems.KIPPAH)) {
+                player.getInventory().offHand.set(0, ItemStack.EMPTY);
+            }
+
+            if (!headStack.isOf(ModItems.KIPPAH)) {
+                player.equipStack(EquipmentSlot.HEAD, createKippah());
+            } else {
+                if (!headStack.contains(DataComponentTypes.UNBREAKABLE)) {
+                    headStack.set(DataComponentTypes.UNBREAKABLE, new UnbreakableComponent(false));
+                }
+            }
+        } else {
+            if (headStack.isOf(ModItems.KIPPAH)) {
+                player.equipStack(EquipmentSlot.HEAD, ItemStack.EMPTY);
+            }
+
+            for (int i = 0; i < 36; i++) {
+                ItemStack stack = player.getInventory().getStack(i);
+                if (stack.isOf(ModItems.KIPPAH)) {
+                    player.getInventory().setStack(i, ItemStack.EMPTY);
+                }
+            }
+
+            if (player.getOffHandStack().isOf(ModItems.KIPPAH)) {
+                player.getInventory().offHand.set(0, ItemStack.EMPTY);
+            }
+        }
+
+        player.getInventory().markDirty();
+        player.currentScreenHandler.sendContentUpdates();
+    }
+
+
 
     public static void tickPlayer(PlayerEntity player) {
         PlayerClass playerClass = getPlayerClass((ServerPlayerEntity) player);
@@ -146,6 +204,10 @@ public final class ClassManager {
                 attribute.removeModifier(ASIAN_DAMAGE_MODIFIER_ID);
             }
         }
+        //==============================================Always wearing Kippah======================================
+        ensureKippah((ServerPlayerEntity) player);
+
+
     }
 
 
@@ -169,6 +231,7 @@ public final class ClassManager {
 
         removeClassEffects(player);
         if (chosenClass.getId().equalsIgnoreCase("jew")) {
+            ensureKippah(player);
             ItemStack stack = new ItemStack(ModItems.HAVA_NAGILA_MUSIC_DISC, 1);
 
             if (!player.getInventory().insertStack(stack)) {
@@ -189,7 +252,7 @@ public final class ClassManager {
         removeClassEffects(player);
         if (newClass.getId().equalsIgnoreCase("jew")) {
             ItemStack stack = new ItemStack(ModItems.HAVA_NAGILA_MUSIC_DISC, 1);
-
+            ensureKippah(player);
             if (!player.getInventory().insertStack(stack)) {
                 player.dropItem(stack, false);
             }

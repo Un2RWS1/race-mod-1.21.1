@@ -1,7 +1,6 @@
 package net.un2rws1.racemod.item;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroups;
+import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -18,6 +17,8 @@ public class ModItems {
             Identifier.of("race-mod", "poop"),
             new PoopItem(new Item.Settings().maxCount(16))
     );
+    public static final Item KIPPAH = registerItem("kippah", new ArmorItem(ArmorMaterials.LEATHER, ArmorItem.Type.HELMET,
+            new Item.Settings().maxCount(1).maxDamage(0)));
     public static final Item RABBI_TOTEM = registerItem("rabbi_totem", new Item(new Item.Settings().maxCount(1)));
     public static final Item HAVA_NAGILA_MUSIC_DISC = registerItem("hava_nagila_music_disc",
             new Item(new Item.Settings().jukeboxPlayable(ModSounds.HAVA_NAGILA_KEY).maxCount(1)));

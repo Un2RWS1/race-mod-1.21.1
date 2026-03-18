@@ -28,6 +28,7 @@ public class ModItemGroups {
                     .entries(((displayContext, entries) -> {
                         entries.add(ModItems.RABBI_TOTEM);
                         entries.add(ModItems.HAVA_NAGILA_MUSIC_DISC);
+                        entries.add(ModItems.KIPPAH);
                     }))
                     .build());
 
