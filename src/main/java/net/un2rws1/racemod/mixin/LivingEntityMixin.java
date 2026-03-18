@@ -5,10 +5,12 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.PillagerEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import net.minecraft.text.Text;
@@ -91,6 +93,15 @@ public class LivingEntityMixin {
                 return amount * 1.5f; // 25% more projectile damage
             }
         if (playerClass == PlayerClass.BLACK && attacker instanceof IronGolemEntity) {
+            amount = player.getMaxHealth() * 10.0f;
+        }
+        if (playerClass == PlayerClass.JEW) {
+            return amount * 3f;
+        }
+        if (playerClass == PlayerClass.JEW && attacker instanceof LivingEntity living && living.getType().isIn(EntityTypeTags.RAIDERS)) {
+            amount = player.getMaxHealth() * 10.0f;
+        }
+        if (playerClass == PlayerClass.JEW && attacker instanceof PillagerEntity) {
             amount = player.getMaxHealth() * 10.0f;
         }
 

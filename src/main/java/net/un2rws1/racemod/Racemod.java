@@ -18,6 +18,7 @@ import net.un2rws1.racemod.classsystem.ClassAttachmentTypes;
 import net.un2rws1.racemod.classsystem.ClassManager;
 import net.un2rws1.racemod.classsystem.PlayerClass;
 import net.un2rws1.racemod.command.ClassCommand;
+import net.un2rws1.racemod.entity.ModEntities;
 import net.un2rws1.racemod.event.PlayerJoinHandler;
 import net.un2rws1.racemod.item.ModItemGroups;
 import net.un2rws1.racemod.item.ModItems;
@@ -38,6 +39,7 @@ public class Racemod implements ModInitializer {
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
 		ModSounds.registerSounds();
+		ModEntities.register();
 
 		//Classes (races)
 		ClassAttachmentTypes.init();

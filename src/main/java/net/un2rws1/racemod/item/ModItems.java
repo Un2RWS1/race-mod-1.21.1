@@ -10,8 +10,14 @@ import net.minecraft.util.Identifier;
 import net.un2rws1.racemod.Racemod;
 import net.un2rws1.racemod.sound.ModSounds;
 
+import static net.un2rws1.racemod.entity.ModEntities.POOP;
+
 public class ModItems {
-    public static final Item POOP = registerItem("poop", new Item(new Item.Settings()));
+    public static final Item POOP = Registry.register(
+            Registries.ITEM,
+            Identifier.of("race-mod", "poop"),
+            new PoopItem(new Item.Settings().maxCount(16))
+    );
     public static final Item RABBI_TOTEM = registerItem("rabbi_totem", new Item(new Item.Settings().maxCount(1)));
     public static final Item HAVA_NAGILA_MUSIC_DISC = registerItem("hava_nagila_music_disc",
             new Item(new Item.Settings().jukeboxPlayable(ModSounds.HAVA_NAGILA_KEY).maxCount(1)));
@@ -22,7 +28,6 @@ public class ModItems {
 
     public static void registerModItems(){
         Racemod.LOGGER.info("Registering Mod Items for " + Racemod.MOD_ID);
-
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(fabricItemGroupEntries -> {
             fabricItemGroupEntries.add(POOP);
             fabricItemGroupEntries.add(RABBI_TOTEM);

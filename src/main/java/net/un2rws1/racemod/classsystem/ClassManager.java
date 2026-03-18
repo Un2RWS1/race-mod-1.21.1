@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.un2rws1.racemod.item.ModItems;
+import net.un2rws1.racemod.item.PoopItem;
 import net.un2rws1.racemod.networking.OpenClassSelectionPayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
