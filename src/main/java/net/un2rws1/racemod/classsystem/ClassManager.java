@@ -153,10 +153,17 @@ public final class ClassManager {
         }
 
         //=====================================Other abilities (testing)==========================
-        // =================================================water slowness for blacks==========================
+        // =================================================water effects for blacks and indians==========================
         if (getPlayerClass((ServerPlayerEntity) player) == PlayerClass.BLACK){
             if(player.isTouchingWaterOrRain()){
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 220, 2, false, false, false));
+            }
+        }
+        if (getPlayerClass((ServerPlayerEntity) player) == PlayerClass.INDIAN){
+            if(player.isTouchingWaterOrRain()){
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 220, 3, false, false, false));
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 220, 0, false, false, false));
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 220, 0, false, false, false));
             }
         }
         // ================================================Poop item dropping====================================

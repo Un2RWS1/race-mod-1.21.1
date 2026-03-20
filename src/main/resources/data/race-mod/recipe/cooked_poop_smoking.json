@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smoking",
+  "category": "misc",
+  "ingredient": {
+    "item": "race-mod:poop"
+  },
+  "result": {
+    "id": "race-mod:cooked_poop"
+  },
+  "experience": 0.7,
+  "cookingtime": 100
+}
