@@ -8,7 +8,8 @@
 		"IronGolemEntityMixin",
 		"MobEntityAccessor",
 		"SlotMixin",
-		"ScreenHandlerMixin"
+		"ScreenHandlerMixin",
+		"PlayerEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

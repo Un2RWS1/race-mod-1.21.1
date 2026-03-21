@@ -64,7 +64,7 @@ public class RacemodClient implements ClientModInitializer{
             int black = 0xFF000000;
             int width = context.getScaledWindowWidth();
             int height = context.getScaledWindowHeight();
-            int barHeight = (int) (height * 0.4f);
+            int barHeight = (int) (height * 0.25f);
             context.fill(0, 0, width, barHeight, black);
             context.fill(0, height - barHeight, width, height, black);
         }

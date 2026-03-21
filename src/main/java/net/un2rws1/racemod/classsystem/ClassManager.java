@@ -5,6 +5,7 @@ import net.minecraft.component.type.UnbreakableComponent;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -183,6 +184,32 @@ public final class ClassManager {
             }
 
             state.setPoopTickTimer(timer);
+        }
+        // =========================================effects after eating/being full=================================
+        HungerManager hungerManager = player.getHungerManager();
+        int foodLevel = hungerManager.getFoodLevel();
+        float saturation = hungerManager.getSaturationLevel();
+        if (playerClass == PlayerClass.BLACK && foodLevel == 20 && saturation > 0) {
+            StatusEffectInstance current = player.getStatusEffect(StatusEffects.SPEED);
+
+            if (current == null || current.getDuration() < 10) {
+                player.addStatusEffect(new StatusEffectInstance(
+                        StatusEffects.SPEED,
+                        40,
+                        1,
+                        true,
+                        false,
+                        false
+                ));
+                player.addStatusEffect(new StatusEffectInstance(
+                        StatusEffects.STRENGTH,
+                        40,
+                        1,
+                        true,
+                        false,
+                        false
+                ));
+            }
         }
 
         // ====================================effects immunity==========================================
