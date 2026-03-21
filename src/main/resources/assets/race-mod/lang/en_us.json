@@ -5,11 +5,17 @@
   "item.race-mod.hava_nagila_music_disc.desc": "Andre Rieu - Hava Nagila (IIP-DDS)",
   "item.race-mod.kippah": "Kippah",
   "item.race-mod.cooked_poop": "Cooked Poop",
+  "item.race-mod.brick_poop": "Poop Brick",
 
   "block.race-mod.poop_block": "Poop Block",
   "block.race-mod.poop_cooked_block": "Cooked Poop Block",
+  "block.race-mod.brick_poop_block": "Poop Brick Block",
 
   "itemgroup.race-mod.indian_items": "Indian Items",
-  "itemgroup.race-mod.jewish_items": "Jewish Items"
+  "itemgroup.race-mod.jewish_items": "Jewish Items",
+
+  "death.attack.crushed_by_brick_poop_block": "%1$s was flattened by POOP?!?!?!",
+  "death.attack.crushed_by_brick_poop_block.player": "%1$s was flattened by %2$s's POOP?!??!"
+
 
 }

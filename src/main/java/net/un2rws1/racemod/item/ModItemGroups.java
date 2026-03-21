@@ -20,6 +20,7 @@ public class ModItemGroups {
                         entries.add(ModBlocks.POOP_BLOCK);
                         entries.add(ModBlocks.POOP_COOKED_BLOCK);
                         entries.add(ModItems.COOKED_POOP);
+                        entries.add(ModItems.POOP_BRICK);
                     }))
                     .build());
 

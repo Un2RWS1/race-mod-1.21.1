@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "race-mod:poop_block",
-    "race-mod:poop_cooked_block"
+    "race-mod:poop_cooked_block",
+    "race-mod:brick_poop_block"
   ]
 }

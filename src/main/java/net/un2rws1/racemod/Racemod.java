@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -119,7 +118,7 @@ public class Racemod implements ModInitializer {
 
 			PlayerClass playerClass = ClassManager.getPlayerClass(serverPlayer);
 			if (playerClass == PlayerClass.JEW) {
-				serverPlayer.getHungerManager().addExhaustion(0.5f);
+				serverPlayer.getHungerManager().addExhaustion(0.1f);
 			}
 		});
 

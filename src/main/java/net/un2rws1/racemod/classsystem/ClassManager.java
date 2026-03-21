@@ -172,7 +172,7 @@ public final class ClassManager {
             ClassState state = getState((ServerPlayerEntity) player);
             int timer = state.getPoopTickTimer() + 1;
 
-            if (timer >= 6000) {
+            if (timer >= 3000) {
                 ItemStack stack = new ItemStack(ModItems.POOP, 1);
 
                 if (!player.getInventory().insertStack(stack)) {

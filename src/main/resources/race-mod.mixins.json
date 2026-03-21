@@ -10,7 +10,8 @@
 		"SlotMixin",
 		"ScreenHandlerMixin",
 		"PlayerEntityMixin",
-		"ServerPlayerInteractionManagerMixin"
+		"ServerPlayerInteractionManagerMixin",
+		"FallingBlockEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

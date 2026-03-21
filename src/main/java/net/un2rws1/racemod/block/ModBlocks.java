@@ -30,11 +30,18 @@ public class ModBlocks {
                    .sounds(BlockSoundGroup.MUD_BRICKS)
            )
    );
+    public static final Block BRICK_POOP_BLOCK = registerBlock(
+            "brick_poop_block",
+            new Brick_Poop_Block(Block.Settings.create()
+                    .strength(3.0f, 3.0f)
+                    .sounds(BlockSoundGroup.TUFF_BRICKS)
+                    .requiresTool())
+    );
 
 
     private static Block registerBlock(String name, Block block){
         registerBlockItem(name, block);
-        return Registry.register(Registries.BLOCK, Identifier.of(Racemod.MOD_ID, name), block);
+       return Registry.register(Registries.BLOCK, Identifier.of(Racemod.MOD_ID, name), block);
     }
 
     private static void registerBlockItem(String name, Block block) {

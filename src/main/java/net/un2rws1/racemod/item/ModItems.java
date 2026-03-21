@@ -24,6 +24,7 @@ public class ModItems {
                     new Item.Settings().maxCount(1)
             )
     );
+    public static final Item POOP_BRICK = registerItem("brick_poop", new Item(new Item.Settings()));
     public static final Item COOKED_POOP = registerItem("cooked_poop", new Item(new Item.Settings()));
     public static final Item RABBI_TOTEM = registerItem("rabbi_totem", new Item(new Item.Settings().maxCount(1)));
     public static final Item HAVA_NAGILA_MUSIC_DISC = registerItem("hava_nagila_music_disc",

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "race-mod:brick_poop"
+    }
+  },
+  "pattern": [
+    " ##",
+    " ##",
+    "   "
+  ],
+  "result": {
+    "count": 1,
+    "id": "race-mod:brick_poop_block"
+  }
+}
