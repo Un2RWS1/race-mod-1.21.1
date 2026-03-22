@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 public class ClassAttachmentTypes {
     public static final AttachmentType<ClassState> PLAYER_CLASS =
             AttachmentRegistry.create(
-                    Identifier.of("yourmodid", "player_class"),
+                    Identifier.of("race-mod", "player_race"),
                     builder -> builder
                             .initializer(ClassState::new)
                             .persistent(ClassState.CODEC)

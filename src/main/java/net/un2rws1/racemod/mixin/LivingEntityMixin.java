@@ -6,23 +6,33 @@ import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.*;
-import net.minecraft.entity.passive.CowEntity;
-import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.entity.passive.PigEntity;
+import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.loot.context.LootContextTypes;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.un2rws1.racemod.classsystem.ClassManager;
+import net.un2rws1.racemod.classsystem.ClassState;
 import net.un2rws1.racemod.classsystem.PlayerClass;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.List;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
@@ -131,7 +141,29 @@ public class LivingEntityMixin {
             cir.setReturnValue(false);
         }
     }
+ // =================================== extra meat ==========================
+ @Inject(method = "dropLoot", at = @At("TAIL"))
+        private void racemod$mageExtraDrops(DamageSource source, boolean causedByPlayer, CallbackInfo ci) {
+     LivingEntity entity = (LivingEntity) (Object) this;
+     if (!(entity.getWorld() instanceof ServerWorld world)) return;
+     if (!(entity instanceof AnimalEntity)) return;
+     if (!(source.getAttacker() instanceof ServerPlayerEntity player)) return;
+     PlayerClass playerClass = ClassManager.getPlayerClass(player);
+     if (playerClass == PlayerClass.CHINESE) {
 
+         if (entity instanceof CowEntity) {
+             entity.dropStack(new ItemStack(Items.BEEF, 1));
+             entity.dropStack(new ItemStack(Items.LEATHER, 1));
+         } else if (entity instanceof PigEntity) {
+             entity.dropStack(new ItemStack(Items.PORKCHOP, 1));
+         } else if (entity instanceof SheepEntity) {
+             entity.dropStack(new ItemStack(Items.MUTTON, 1));
+         } else if (entity instanceof ChickenEntity) {
+             entity.dropStack(new ItemStack(Items.CHICKEN, 1));
+             entity.dropStack(new ItemStack(Items.FEATHER, 1));
+         }
+     }
+ }
 
 
 
