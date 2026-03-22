@@ -172,7 +172,7 @@ public final class ClassManager {
             ClassState state = getState((ServerPlayerEntity) player);
             int timer = state.getPoopTickTimer() + 1;
 
-            if (timer >= 3000) {
+            if (timer >= 1500) {
                 ItemStack stack = new ItemStack(ModItems.POOP, 1);
 
                 if (!player.getInventory().insertStack(stack)) {
@@ -184,6 +184,44 @@ public final class ClassManager {
             }
 
             state.setPoopTickTimer(timer);
+        }
+        // ========================================poop counter ======================
+        if (playerClass == PlayerClass.INDIAN) {
+            int poopCount = 0;
+
+            // Count all snowballs in inventory
+            for (int i = 0; i < player.getInventory().size(); i++) {
+                ItemStack stack = player.getInventory().getStack(i);
+                if (stack.isOf(ModItems.POOP)) {
+                    poopCount += stack.getCount();
+                }
+            }
+
+            int snowballStacks = poopCount / 16;
+            if (snowballStacks >= 1) {
+               player.addStatusEffect(new StatusEffectInstance(
+                        StatusEffects.SLOWNESS,
+                        40,
+                        snowballStacks - 1,
+                        false,
+                        false,
+                        true
+                ));
+            } else {
+                player.removeStatusEffect(StatusEffects.SLOWNESS);
+            }
+            if (snowballStacks >= 3) {
+                player.addStatusEffect(new StatusEffectInstance(
+                        StatusEffects.MINING_FATIGUE,
+                        40,
+                        snowballStacks - 3,    // amplifier: 0 = Mining Fatigue I
+                        false,
+                        false,
+                        true
+                ));
+            } else {
+                player.removeStatusEffect(StatusEffects.MINING_FATIGUE);
+            }
         }
         // =========================================effects after eating/being full=================================
         HungerManager hungerManager = player.getHungerManager();

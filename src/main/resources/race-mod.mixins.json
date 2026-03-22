@@ -15,7 +15,8 @@
 		"EndermanEntityMixin",
 		"PiglinBrainMixin",
 		"PiglinEntityMixin",
-		"PiglinInteractMixin"
+		"PiglinInteractMixin",
+		"client.InGameHudMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

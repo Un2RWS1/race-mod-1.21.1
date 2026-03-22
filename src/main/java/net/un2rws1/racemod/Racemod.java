@@ -7,11 +7,14 @@ import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.GameMode;
@@ -33,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import net.un2rws1.racemod.event.PlayerRespawnHandler;
 
 import static net.un2rws1.racemod.classsystem.ClassManager.*;
+
 
 public class Racemod implements ModInitializer {
 	public static final String MOD_ID = "race-mod";
@@ -57,6 +61,11 @@ public class Racemod implements ModInitializer {
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
 				ClassManager.tickPlayer(player);
+			}
+		});
+		ServerTickEvents.START_SERVER_TICK.register(server -> {
+			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+				tickPlayer(player);
 			}
 		});
 		//==============coin slot eye==============
@@ -121,8 +130,6 @@ public class Racemod implements ModInitializer {
 				serverPlayer.getHungerManager().addExhaustion(0.1f);
 			}
 		});
-
-
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
 				ClassCommand.register(dispatcher));
 	}
@@ -155,6 +162,65 @@ public class Racemod implements ModInitializer {
 
 		}
 	}
+
+	// ==============================interest rate======================
+	//==================tick player serverentity player
+	private static void tickPlayer(ServerPlayerEntity player) {
+		PlayerClass playerClass = ClassManager.getPlayerClass(player);
+		if (playerClass == PlayerClass.JEW) {
+			handleJewInterestReward(player);
+		}
+	}
+	private static int countItem(ServerPlayerEntity player, Item item) {
+		int count = 0;
+		for (int i = 0; i < player.getInventory().size(); i++) {
+			ItemStack stack = player.getInventory().getStack(i);
+			if (stack.isOf(item)) {
+				count += stack.getCount();
+			}
+		}
+		return count;
+	}
+	private static void handleOreReward(ServerPlayerEntity player, Item input, Item output) {
+		int count = countItem(player, input);
+		int fullStacks = count / 64;
+
+		if (fullStacks > 0) {
+			ItemStack reward = new ItemStack(output, fullStacks);
+			giveOrDrop(player, reward);
+		}
+	}
+	private static void giveOrDrop(ServerPlayerEntity player, ItemStack stack) {
+		boolean inserted = player.getInventory().insertStack(stack);
+
+		if (!inserted || !stack.isEmpty()) {
+			player.dropItem(stack, false);
+		}
+	}
+	private static void handleJewInterestReward(ServerPlayerEntity player) {
+		ServerWorld world = player.getServerWorld();
+		long currentDay = world.getTimeOfDay() / 24000L;
+		ClassState state = ClassManager.getState(player);
+		if (state.getLastJewsInterestDay() == -1L) {
+			state.setLastJewsIntersetDay(currentDay);
+			return;
+		}
+		if (state.getLastJewsInterestDay() == currentDay) {
+			return;
+		}
+		int diamondCount = countItem(player, Items.DIAMOND);
+		int fullStacks = diamondCount / 64;
+		handleOreReward(player, Items.DIAMOND, Items.DIAMOND);
+		handleOreReward(player, Items.GOLD_INGOT, Items.GOLD_INGOT);
+		handleOreReward(player, Items.EMERALD, Items.EMERALD);
+
+			player.sendMessage(Text.literal("Your interest came in to " + fullStacks + " valuable ores. Congrats on being a JEW!"), true);
+
+
+		state.setLastJewsIntersetDay(currentDay);
+	}
+
+
 }
 
 
