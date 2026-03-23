@@ -338,7 +338,7 @@ public class Racemod implements ModInitializer {
 	private static boolean stealRandomItem(ServerPlayerEntity thief, ServerPlayerEntity target) {
 		PlayerInventory inv = target.getInventory();
 		List<Integer> validSlots = new ArrayList<>();
-		for (int slot = 0; slot < inv.size(); slot++) {
+		for (int slot = 0; slot < 36; slot++) {
 			ItemStack stack = inv.getStack(slot);
 			if (stack.isEmpty()) continue;
 			validSlots.add(slot);
@@ -364,7 +364,7 @@ public class Racemod implements ModInitializer {
 				.append(Text.literal("!")), true);
 		target.sendMessage(Text.literal("A ")
 				.append(Text.literal("BLACK").formatted(Formatting.BLACK))
-				.append(Text.literal(" from you! CALL THE IRON GOLEM!!")), true);
+				.append(Text.literal(" stole from you! CALL THE IRON GOLEM!!")), true);
 		return true;
 	}
 	private static String formatStealCooldown(long ticks) {
