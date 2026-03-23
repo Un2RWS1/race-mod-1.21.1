@@ -273,11 +273,7 @@ public class Racemod implements ModInitializer {
 		long lastSteal = thiefState.getLastStealTime();
 		long remaining = STEAL_COOLDOWN_TICKS - (now - lastSteal);
 		if (remaining > 0) {
-			thief.sendMessage(Text.literal("Stealing is still on cooldown for " + formatStealCooldown(remaining) + "."), true);
-			return;
-		}
-		if (now - lastSteal < STEAL_COOLDOWN_TICKS) {
-			thief.sendMessage(Text.literal("Calm down, we know you can't control your impulse but there is a cool down."), true);
+			thief.sendMessage(Text.literal("Calm down, we know you can't control your impulse but just hold it for " + formatStealCooldown(remaining) + "."), true);
 			return;
 		}
 		Entity entity = thief.getServerWorld().getEntityById(targetEntityId);
@@ -293,11 +289,11 @@ public class Racemod implements ModInitializer {
 			thief.sendMessage(Text.literal("You are too far away to steal."), true);
 			return;
 		}
-		if (thiefState.getStealTargetUuid() != null) {
+		if (thiefState.getStealTargetEntityId() != -1) {
 			thief.sendMessage(Text.literal("You are already stealing, chill out"), true);
 			return;
 		}
-		thiefState.setStealTargetUuid(target.getUuid());
+		thiefState.setStealTargetEntityId(target.getId());
 		thiefState.setStealStartTick(now);
 		thiefState.setStealTargetStartPos(target.getBlockPos());
 		thief.sendMessage(Text.literal("Doing what you do best, now make sure they don't move"), true);

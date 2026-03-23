@@ -67,14 +67,6 @@ public class ClassState
         this.lastStealTime = lastStealTime;
     }
 
-    public UUID getStealTargetUuid() {
-        return stealTargetUuid;
-    }
-
-    public void setStealTargetUuid(UUID stealTargetUuid) {
-        this.stealTargetUuid = stealTargetUuid;
-    }
-
     public long getStealStartTick() {
         return stealStartTick;
     }
