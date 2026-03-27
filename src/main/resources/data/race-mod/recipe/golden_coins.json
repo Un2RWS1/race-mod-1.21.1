@@ -3,16 +3,20 @@
   "category" : "misc",
   "key": {
     "#": {
-      "item": "minecraft:gold_nugget"
+      "item": "minecraft:gold_ingot"
+    },
+    "B": {
+      "item": "minecraft:gold_block"
     }
   },
+
   "pattern": [
-    " ##",
-    " ##",
+    " #B",
+    " B#",
     "   "
   ],
   "result": {
     "id": "race-mod:golden_coins",
-    "count": 1
+    "count": 4
   }
 }

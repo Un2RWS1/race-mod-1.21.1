@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "IGI",
+    "RDR",
+    "III"
+  ],
+  "key": {
+    "I": { "item": "minecraft:iron_block" },
+    "G": { "item": "minecraft:gold_block" },
+    "R": { "item": "minecraft:redstone_block" },
+    "D": { "item": "minecraft:diamond_block" }
+  },
+  "result": {
+    "id": "race-mod:slot_machine",
+    "count": 1
+  }
+}

@@ -3,6 +3,7 @@ package net.un2rws1.racemod.block;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.MapColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
@@ -14,6 +15,14 @@ import net.un2rws1.racemod.Racemod;
 
 public class ModBlocks {
 
+    public static final Block SLOT_MACHINE = registerBlock(
+            "slot_machine",
+            new Slot_Machine(AbstractBlock.Settings.create()
+                    .mapColor(MapColor.IRON_GRAY)
+                    .strength(4.0f)
+                    .sounds(BlockSoundGroup.METAL)
+                    .requiresTool())
+    );
     public static final Block POOP_BLOCK =
            registerBlock("poop_block",
                    new Poop_Block(AbstractBlock.Settings.create()

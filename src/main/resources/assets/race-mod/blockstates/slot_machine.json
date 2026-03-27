@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "race-mod:block/slot_machine"
+    }
+  }
+}
