@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,6 +29,7 @@ import net.un2rws1.racemod.classsystem.ClassManager;
 import net.un2rws1.racemod.classsystem.ClassState;
 import net.un2rws1.racemod.classsystem.PlayerClass;
 import net.un2rws1.racemod.command.ClassCommand;
+import net.un2rws1.racemod.effect.ModEffects;
 import net.un2rws1.racemod.entity.ModEntities;
 import net.un2rws1.racemod.event.PlayerJoinHandler;
 import net.un2rws1.racemod.item.ModItemGroups;
@@ -58,6 +60,7 @@ public class Racemod implements ModInitializer {
 		ModSounds.registerSounds();
 		ModEntities.register();
 		ModItems.registerModItems();
+		ModEffects.registerEffects();
 		//Classes (races)
 		ClassAttachmentTypes.init();
 		ModNetworking.register();
@@ -223,6 +226,17 @@ public class Racemod implements ModInitializer {
 		}
 		if (playerClass == PlayerClass.BLACK) {
 			tickThiefSteal(player, state);
+		}
+		if (player instanceof ServerPlayerEntity serverPlayer) {
+			ItemStack headStack = player.getEquippedStack(EquipmentSlot.HEAD);
+
+			if (playerClass == PlayerClass.CHINESE
+					&& headStack.isOf(ModItems.GLASSES)) {
+
+				if (player.age % 1200 == 0) {
+					headStack.damage(1, serverPlayer, EquipmentSlot.HEAD);
+				}
+			}
 		}
 	}
 	private static int countItem(ServerPlayerEntity player, Item item) {

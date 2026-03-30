@@ -1,6 +1,8 @@
 package net.un2rws1.racemod;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -9,14 +11,20 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Text;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
 import net.un2rws1.racemod.classsystem.ClassAttachmentTypes;
 import net.un2rws1.racemod.classsystem.PlayerClass;
 import net.un2rws1.racemod.client.ClientClassState;
 import net.un2rws1.racemod.client.screen.ClassSelectionScreen;
+import net.minecraft.client.MinecraftClient;
 import net.un2rws1.racemod.entity.ModEntities;
 import net.un2rws1.racemod.event.PlayerJoinHandler;
+import net.un2rws1.racemod.item.ModItems;
+import net.un2rws1.racemod.mixin.client.GameRendererAccessor;
 import net.un2rws1.racemod.networking.ModNetworking;
 import net.un2rws1.racemod.networking.OpenClassSelectionPayload;
 import net.un2rws1.racemod.networking.StealAttemptPayload;
@@ -25,7 +33,9 @@ import org.lwjgl.glfw.GLFW;
 
 
 public class RacemodClient implements ClientModInitializer{
-    private static KeyBinding stealKey; // ✅ declare here
+    private static KeyBinding stealKey;
+    private static boolean blurEnabled = false;
+
 
     @Override
     public void onInitializeClient() {
@@ -49,7 +59,17 @@ public class RacemodClient implements ClientModInitializer{
                 }
                 ClientPlayNetworking.send(new StealAttemptPayload(targetId));
             }
-        });
+            // blurr
+            if (client.player == null || client.world == null) return;
+
+            boolean shouldBlur = shouldChineseBeBlurred(client);
+
+            if (shouldBlur != blurEnabled) {
+                blurEnabled = shouldBlur;
+                updateBlurShader(client, blurEnabled);
+            }
+            });
+
 
         ClientPlayNetworking.registerGlobalReceiver(OpenClassSelectionPayload.ID, (payload, context) -> {
             System.out.println("[RaceMod] Received OpenClassSelectionPayload");
@@ -69,7 +89,29 @@ public class RacemodClient implements ClientModInitializer{
                 ClientClassState.setPlayerClass(parsed);
             });
         });
+
+
         System.out.println("[RaceMod] Client initializer loaded");
+
+    }
+    // blur
+    private static boolean shouldChineseBeBlurred(MinecraftClient client) {
+         boolean isChinese = ClientClassState.getPlayerClass() == PlayerClass.CHINESE;
+        ItemStack headStack = client.player.getEquippedStack(EquipmentSlot.HEAD);
+        boolean wearingGlasses = headStack.isOf(ModItems.GLASSES);
+        return isChinese && !wearingGlasses;
+    }
+    private static void updateBlurShader(MinecraftClient client, boolean enable) {
+        if (client.gameRenderer == null) return;
+
+        if (enable) {
+            ((GameRendererAccessor) client.gameRenderer)
+                    .racemod$loadPostProcessor(
+                            Identifier.of(Racemod.MOD_ID, "shaders/post/blurry_vision.json")
+                    );
+        } else {
+            client.gameRenderer.disablePostProcessor();
+        }
     }
 
 }

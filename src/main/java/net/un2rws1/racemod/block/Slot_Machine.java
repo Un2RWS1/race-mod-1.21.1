@@ -47,7 +47,7 @@ public class Slot_Machine extends Block {
         int bet = Math.min(coinsInHand, MAX_BET);
 
         if (!player.isCreative()) {
-            stack.decrement(1);
+            stack.decrement(bet);
         }
 
         ServerWorld serverWorld = (ServerWorld) world;
@@ -85,19 +85,18 @@ public class Slot_Machine extends Block {
     }
 
     private SlotResult rollResult(Random random, int bet) {
-        // total = 1000
         int roll = random.nextInt(1000);
 
         if (roll < 600) {
             return new SlotResult(0, false);
         } else if (roll < 750) {
-            int payout = Math.max(1, Math.round(bet * randomBetween(random, 0.5f, 1.25f)));
+            int payout = Math.max(1, Math.round(bet * randomBetween(random, 0.5f, 1.5f)));
             return new SlotResult(payout, false);
-        } else if (roll < 900) {
-            int payout = Math.max(1, Math.round(bet * randomBetween(random, 1.5f, 2.0f)));
+        } else if (roll < 850) {
+            int payout = Math.max(1, Math.round(bet * randomBetween(random, 1.5f, 2.5f)));
             return new SlotResult(payout, false);
         } else if (roll < 995) {
-            int payout = Math.max(1, Math.round(bet * randomBetween(random, 2.0f, 2.5f)));
+            int payout = Math.max(1, Math.round(bet * randomBetween(random, 2.5f, 3.5f)));
             return new SlotResult(payout, false);
         } else {
             int payout = Math.max(1, Math.round(bet * randomBetween(random, 10.0f, 50.0f)));

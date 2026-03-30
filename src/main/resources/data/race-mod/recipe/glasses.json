@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category" : "misc",
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    }
+  },
+  "pattern": [
+    "GSG",
+    "S S",
+    "   "
+  ],
+  "result": {
+    "id": "race-mod:glasses",
+    "count": 1
+  }
+}

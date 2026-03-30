@@ -46,6 +46,14 @@ public class ModItemGroups {
                         entries.add(ModItems.KFC_BUCKET);
                     }))
                     .build());
+    public static final ItemGroup CHINESE_ITEM_GROUP = Registry.register(Registries.ITEM_GROUP,
+                    Identifier.of(Racemod.MOD_ID, "chinese_items"),
+                    FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.GLASSES))
+                    .displayName(Text.translatable("itemgroup.race-mod.chinese_items"))
+                    .entries(((displayContext, entries) -> {
+                        entries.add(ModItems.GLASSES);
+            }))
+        .build());
 
     public static void registerItemGroups() {
         Racemod.LOGGER.info("Registering Item Groups for " + Racemod.MOD_ID);

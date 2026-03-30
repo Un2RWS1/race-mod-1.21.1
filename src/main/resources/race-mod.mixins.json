@@ -22,8 +22,11 @@
 		"BedrockBreakMixin",
 		"EnchantingTableBlockMixin",
 		"BrewingStandBlockEntityMixin",
-		"BrewingStandIngredientSlotMixin"
+		"BrewingStandIngredientSlotMixin",
+		"client.GameRendererAccessor",
+		"client.GameRendererMixin"
 	],
+
 	"injectors": {
 		"defaultRequire": 1
 	},

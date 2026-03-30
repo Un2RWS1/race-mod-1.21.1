@@ -10,6 +10,8 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.un2rws1.racemod.Racemod;
+import net.un2rws1.racemod.item.ModArmorMaterials;
+import net.un2rws1.racemod.item.PoopItem;
 import net.un2rws1.racemod.sound.ModSounds;
 
 import static net.un2rws1.racemod.entity.ModEntities.POOP;
@@ -25,6 +27,13 @@ public class ModItems {
                     ModArmorMaterials.KIPPAH,
                     ArmorItem.Type.HELMET,
                     new Item.Settings().maxCount(1)
+            )
+    );
+    public static final Item GLASSES = registerItem("glasses",
+            new ArmorItem(
+                    ModArmorMaterials.GLASSES,
+                    ArmorItem.Type.HELMET,
+                    new Item.Settings().maxCount(1).maxDamage(110)
             )
     );
     public static final Item POOP_BRICK = registerItem("brick_poop", new Item(new Item.Settings()));

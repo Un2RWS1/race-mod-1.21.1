@@ -11,6 +11,7 @@
   "item.race-mod.music_disc_base" : "Music Disc Base",
   "item.race-mod.golden_coins" : "Golden coins",
   "item.race-mod.david_star" : "Star of David",
+  "item.race-mod.glasses" : "Glasses",
 
   "block.race-mod.poop_block": "Poop Block",
   "block.race-mod.poop_cooked_block": "Cooked Poop Block",
@@ -20,9 +21,15 @@
   "itemgroup.race-mod.indian_items": "Indian Items",
   "itemgroup.race-mod.jewish_items": "Jewish Items",
   "itemgroup.race-mod.black_items": "Black Items",
+  "itemgroup.race-mod.chinese_items": "Chinese Items",
+  "itemgroup.race-mod.mexican_items": "Mexican Items",
+  "itemgroup.race-mod.race-mod_items" : "Race Mod Items",
 
   "death.attack.crushed_by_brick_poop_block": "%1$s was flattened by POOP?!?!?!",
-  "death.attack.crushed_by_brick_poop_block.player": "%1$s was flattened by %2$s's POOP?!??!"
+  "death.attack.crushed_by_brick_poop_block.player": "%1$s was flattened by %2$s's POOP?!??!",
+
+  "effect.race-mod.blurry_vision": "Blurry Vision"
+
 
 
 }
