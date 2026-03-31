@@ -27,6 +27,8 @@
   "item.race-mod.dont_talk_music_disc.desc" : "Don't Talk To N - VRIGGER",
   "item.race-mod.ern_music_disc" : "ERN",
   "item.race-mod.ern_music_disc.desc" : "ERN - VRIGGER",
+  "item.race-mod.efn_music_disc" : "EFN",
+  "item.race-mod.efn_music_disc.desc" : "EFN - VRIGGER",
 
   "block.race-mod.poop_block": "Poop Block",
   "block.race-mod.poop_cooked_block": "Cooked Poop Block",

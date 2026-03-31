@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category" : "misc",
+  "key": {
+    "C": {
+      "item": "race-mod:music_disc_base"
+    },
+    "F": {
+      "item": "minecraft:melon_slice"
+    },
+    "K": {
+      "item": "minecraft:cooked_chicken"
+    }
+  },
+  "pattern": [
+    "KKK",
+    "FCK",
+    "FFF"
+  ],
+  "result": {
+    "id": "race-mod:ern_music_disc",
+    "count": 1
+  }
+}
