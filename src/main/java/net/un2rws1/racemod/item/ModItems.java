@@ -75,6 +75,21 @@ public class ModItems {
                     .saturationModifier(0.8f)
                     .build())
     ));
+    public static final Item COOKED_BAT_MEAT = registerItem("cooked_bat_meat", new CovidFoodItem(new Item.Settings().food(
+            new FoodComponent.Builder()
+                    .nutrition(5)
+                    .saturationModifier(0.5f)
+                    .alwaysEdible()
+                    .build())
+    ));
+    public static final Item BAT_MEAT = registerItem("bat_meat", new CovidFoodItem(new Item.Settings().food(
+            new FoodComponent.Builder()
+                    .nutrition(3)
+                    .saturationModifier(0.3f)
+                    .alwaysEdible()
+                    .build())
+    ));
+
 
     public static final Item MUSIC_DISC_BASE = registerItem("music_disc_base", new Item(new Item.Settings().maxCount(1)));
     public static final Item GOLDEN_COINS = registerItem("golden_coins", new Item(new Item.Settings()));

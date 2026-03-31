@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "ingredient": {
+    "item": "race-mod:bat_meat"
+  },
+  "result": {
+    "id": "race-mod:cooked_bat_meat"
+  },
+  "experience": 1.5,
+  "cookingtime": 150
+}

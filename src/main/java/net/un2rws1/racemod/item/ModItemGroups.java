@@ -61,6 +61,8 @@ public class ModItemGroups {
                         entries.add(ModItems.COOKED_CAT_MEAT);
                         entries.add(ModItems.COOKED_WOLF_MEAT);
                         entries.add(ModItems.SKAI_MUSIC_DISC);
+                        entries.add(ModItems.BAT_MEAT);
+                        entries.add(ModItems.COOKED_BAT_MEAT);
             }))
         .build());
     public static final ItemGroup MEXICAN_ITEM_GROUP = Registry.register(Registries.ITEM_GROUP,

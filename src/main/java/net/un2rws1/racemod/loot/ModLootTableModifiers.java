@@ -21,6 +21,8 @@ public class ModLootTableModifiers {
             RegistryKey.of(RegistryKeys.LOOT_TABLE, Identifier.of("minecraft", "entities/ocelot"));
     private static final RegistryKey<LootTable> VILLAGER_LOOT =
             RegistryKey.of(RegistryKeys.LOOT_TABLE, Identifier.of("minecraft", "entities/villager"));
+    private static final RegistryKey<LootTable> BAT_LOOT =
+            RegistryKey.of(RegistryKeys.LOOT_TABLE, Identifier.of("minecraft", "entities/bat"));
 
     public static void modifyLootTables() {
         LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
@@ -44,6 +46,13 @@ public class ModLootTableModifiers {
                         LootPool.builder()
                                 .rolls(UniformLootNumberProvider.create(1.0f, 5.0f))
                                 .with(ItemEntry.builder(ModItems.GOLDEN_COINS))
+                );
+            }
+            if(BAT_LOOT.equals(key)){
+                tableBuilder.pool(
+                        LootPool.builder()
+                                .rolls(UniformLootNumberProvider.create(1.0f, 1.0f))
+                                .with(ItemEntry.builder(ModItems.BAT_MEAT))
                 );
             }
         });
