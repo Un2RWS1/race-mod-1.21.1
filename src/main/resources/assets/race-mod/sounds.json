@@ -14,5 +14,21 @@
         "stream": true
       }
     ]
+  },
+  "skai": {
+    "sounds": [
+      {
+        "name": "race-mod:skai",
+        "stream": true
+      }
+    ]
+  },
+  "la_cucaracha": {
+    "sounds": [
+      {
+        "name": "race-mod:la_cucaracha",
+        "stream": true
+      }
+    ]
   }
 }

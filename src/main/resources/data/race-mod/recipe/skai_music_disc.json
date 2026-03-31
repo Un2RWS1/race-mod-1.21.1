@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category" : "misc",
+  "key": {
+    "C": {
+      "item": "race-mod:music_disc_base"
+    },
+    "G": {
+      "item": "race-mod:glasses"
+    }
+  },
+  "pattern": [
+    " G ",
+    "GCG",
+    " G "
+  ],
+  "result": {
+    "id": "race-mod:skai_music_disc",
+    "count": 1
+  }
+}

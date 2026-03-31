@@ -20,6 +20,14 @@ public class ModSounds {
     public static final RegistryKey<JukeboxSong> N2_KEY =
             RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Identifier.of(Racemod.MOD_ID, "n2"));
 
+    public static final SoundEvent SKAI = registerSoundEvent("skai");
+    public static final RegistryKey<JukeboxSong> SKAI_KEY =
+            RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Identifier.of(Racemod.MOD_ID, "skai"));
+
+    public static final SoundEvent LA_CUCARACHA = registerSoundEvent("la_cucaracha");
+    public static final RegistryKey<JukeboxSong> LA_CUCARACHA_KEY =
+            RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Identifier.of(Racemod.MOD_ID, "la_cucaracha"));
+
 
 
 

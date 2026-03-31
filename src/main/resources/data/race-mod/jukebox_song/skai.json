@@ -1,0 +1,8 @@
+{
+  "comparator_output": 15,
+  "description" : {
+    "translate": "item.race-mod.skai_music_disc.desc"
+  },
+  "length_in_seconds": 211.0,
+  "sound_event": "race-mod:skai"
+}

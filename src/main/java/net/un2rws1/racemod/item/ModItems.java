@@ -84,6 +84,10 @@ public class ModItems {
             new Item(new Item.Settings().jukeboxPlayable(ModSounds.HAVA_NAGILA_KEY).maxCount(1)));
     public static final Item N2_MUSIC_DISC = registerItem("n2_music_disc",
             new Item(new Item.Settings().jukeboxPlayable(ModSounds.N2_KEY).maxCount(1)));
+    public static final Item SKAI_MUSIC_DISC = registerItem("skai_music_disc",
+            new Item(new Item.Settings().jukeboxPlayable(ModSounds.SKAI_KEY).maxCount(1)));
+    public static final Item LA_CUCARACHA_MUSIC_DISC = registerItem("la_cucaracha_music_disc",
+            new Item(new Item.Settings().jukeboxPlayable(ModSounds.LA_CUCARACHA_KEY).maxCount(1)));
     public static final Item KOOL_AID = registerItem("kool_aid", new Item(new Item.Settings().food(
             new FoodComponent.Builder()
                     .nutrition(3)

@@ -57,6 +57,7 @@ public class ModItemGroups {
                         entries.add(ModItems.WOLF_MEAT);
                         entries.add(ModItems.COOKED_CAT_MEAT);
                         entries.add(ModItems.COOKED_WOLF_MEAT);
+                        entries.add(ModItems.SKAI_MUSIC_DISC);
             }))
         .build());
     public static final ItemGroup MEXICAN_ITEM_GROUP = Registry.register(Registries.ITEM_GROUP,
@@ -65,7 +66,7 @@ public class ModItemGroups {
                     .displayName(Text.translatable("itemgroup.race-mod.mexican_items"))
                     .entries(((displayContext, entries) -> {
                         entries.add(ModItems.GREEN_CARD);
-
+                        entries.add(ModItems.LA_CUCARACHA_MUSIC_DISC);
                     }))
                     .build());
     public static final ItemGroup RACE_MOD_ITEM_GROUP = Registry.register(Registries.ITEM_GROUP,
