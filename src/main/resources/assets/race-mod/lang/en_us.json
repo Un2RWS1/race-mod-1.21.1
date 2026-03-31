@@ -33,8 +33,10 @@
   "death.attack.crushed_by_brick_poop_block": "%1$s was flattened by POOP?!?!?!",
   "death.attack.crushed_by_brick_poop_block.player": "%1$s was flattened by %2$s's POOP?!??!",
 
-  "effect.race-mod.blurry_vision": "Blurry Vision"
+  "effect.race-mod.blurry_vision": "Blurry Vision",
 
-
-
+  "entity.minecraft.villager.rabbi": "Rabbi"
 }
+
+
+

@@ -36,7 +36,7 @@ public class Green_Card_Helper {
         return false;
     }
 
-    public static boolean warriorNeedsTicket(PlayerEntity player) {
+    public static boolean mexicanNeedsTicket(PlayerEntity player) {
         return isMEXICAN(player) && !hasGreen_Card(player);
     }
 

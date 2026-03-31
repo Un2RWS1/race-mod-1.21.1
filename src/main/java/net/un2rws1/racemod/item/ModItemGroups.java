@@ -73,7 +73,7 @@ public class ModItemGroups {
                     .displayName(Text.translatable("itemgroup.race-mod.race_mod_items"))
                     .entries(((displayContext, entries) -> {
                         entries.add(ModItems.MUSIC_DISC_BASE);
-
+                        entries.add(ModBlocks.SLOT_MACHINE);
                     }))
                     .build());
 

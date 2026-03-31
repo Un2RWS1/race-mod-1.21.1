@@ -40,6 +40,9 @@ import net.un2rws1.racemod.networking.ModNetworking;
 import net.un2rws1.racemod.networking.StealAttemptPayload;
 import net.un2rws1.racemod.networking.SyncClassPayload;
 import net.un2rws1.racemod.sound.ModSounds;
+import net.un2rws1.racemod.villager.ModPointOfInterestTypes;
+import net.un2rws1.racemod.villager.ModVillagerProfessions;
+import net.un2rws1.racemod.villager.ModVillagerTrades;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.un2rws1.racemod.event.PlayerRespawnHandler;
@@ -57,15 +60,18 @@ public class Racemod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 
+		ModBlocks.registerModBlocks();
+		ModItems.registerModItems();
 
 		ModItemGroups.registerItemGroups();
-		ModBlocks.registerModBlocks();
 		ModSounds.registerSounds();
 		ModEntities.register();
-		ModItems.registerModItems();
 		ModEffects.registerEffects();
-		ModItems.registerModItems();
 		ModLootTableModifiers.modifyLootTables();
+
+		ModPointOfInterestTypes.registerModPoiTypes();
+		ModVillagerProfessions.registerVillagerProfessions();
+		ModVillagerTrades.registerVillagerTrades();
 		//Classes (races)
 		ClassAttachmentTypes.init();
 		ModNetworking.register();

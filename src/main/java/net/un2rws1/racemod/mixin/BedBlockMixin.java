@@ -18,13 +18,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class BedBlockMixin {
 
     @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
-    private void racemod$blockWarriorBedUse(BlockState state, World world, BlockPos pos,
+    private void racemod$blockMexicanBedUse(BlockState state, World world, BlockPos pos,
                                             PlayerEntity player, BlockHitResult hit,
                                             CallbackInfoReturnable<ActionResult> cir) {
-        if (Green_Card_Helper.warriorNeedsTicket(player)) {
+        if (Green_Card_Helper.mexicanNeedsTicket(player)) {
             Green_Card_Helper.sendNoTicketMessage(player, "use beds");
             player.playSound(SoundEvents.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
             cir.setReturnValue(ActionResult.SUCCESS);
         }
     }
+
 }
