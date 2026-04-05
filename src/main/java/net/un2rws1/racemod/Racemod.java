@@ -300,11 +300,11 @@ public class Racemod implements ModInitializer {
 			return;
 		}
 		int diamondCount = countItem(player, Items.DIAMOND);
-		int fullStacks = diamondCount / 64;
+		int fullStacks = diamondCount / 32;
 		int emeraldCount = countItem(player, Items.EMERALD);
 		fullStacks += emeraldCount / 64;
 		int goldCount = countItem(player, Items.GOLD_INGOT);
-		fullStacks += goldCount /64;
+		fullStacks += goldCount / 64;
 		handleOreReward(player, Items.DIAMOND, Items.DIAMOND);
 		handleOreReward(player, Items.GOLD_INGOT, Items.GOLD_INGOT);
 		handleOreReward(player, Items.EMERALD, Items.EMERALD);
