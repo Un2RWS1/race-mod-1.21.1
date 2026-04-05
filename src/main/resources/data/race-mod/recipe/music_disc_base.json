@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category" : "misc",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "pattern": [
+    " I ",
+    "IDI",
+    " D "
+  ],
+  "result": {
+    "id": "race-mod:music_disc_base",
+    "count": 1
+  }
+}

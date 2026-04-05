@@ -2,6 +2,7 @@ package net.un2rws1.racemod;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
@@ -206,6 +207,15 @@ public class Racemod implements ModInitializer {
 
 	*/
 		});
+
+		// stealing
+		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
+			ClassState oldState = getState(oldPlayer);
+			ClassState newState = getState(newPlayer);
+			newState.setSelectedClassId(oldState.getSelectedClassId());
+			newState.setLastStealTime(oldState.getLastStealTime());
+			newState.clearStealAttempt();
+		});
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
 				ClassCommand.register(dispatcher));
 	}
@@ -291,6 +301,10 @@ public class Racemod implements ModInitializer {
 		}
 		int diamondCount = countItem(player, Items.DIAMOND);
 		int fullStacks = diamondCount / 64;
+		int emeraldCount = countItem(player, Items.EMERALD);
+		fullStacks += emeraldCount / 64;
+		int goldCount = countItem(player, Items.GOLD_INGOT);
+		fullStacks += goldCount /64;
 		handleOreReward(player, Items.DIAMOND, Items.DIAMOND);
 		handleOreReward(player, Items.GOLD_INGOT, Items.GOLD_INGOT);
 		handleOreReward(player, Items.EMERALD, Items.EMERALD);
