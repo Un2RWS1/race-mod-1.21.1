@@ -109,6 +109,8 @@ public class ModItems {
             new Item(new Item.Settings().jukeboxPlayable(ModSounds.ERN_KEY).maxCount(1)));
     public static final Item EFN_MUSIC_DISC = registerItem("efn_music_disc",
             new Item(new Item.Settings().jukeboxPlayable(ModSounds.EFN_KEY).maxCount(1)));
+    public static final Item MIKU_MUSIC_DISC = registerItem("miku_music_disc",
+            new Item(new Item.Settings().jukeboxPlayable(ModSounds.MIKU_KEY).maxCount(1)));
     public static final Item KOOL_AID = registerItem("kool_aid", new Item(new Item.Settings().food(
             new FoodComponent.Builder()
                     .nutrition(3)

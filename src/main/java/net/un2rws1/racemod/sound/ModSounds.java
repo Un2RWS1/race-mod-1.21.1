@@ -39,6 +39,10 @@ public class ModSounds {
     public static final SoundEvent EFN = registerSoundEvent("efn");
     public static final RegistryKey<JukeboxSong> EFN_KEY =
             RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Identifier.of(Racemod.MOD_ID, "efn"));
+    public static final SoundEvent MIKU = registerSoundEvent("miku");
+    public static final RegistryKey<JukeboxSong> MIKU_KEY =
+            RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Identifier.of(Racemod.MOD_ID, "miku"));
+
 
 
 

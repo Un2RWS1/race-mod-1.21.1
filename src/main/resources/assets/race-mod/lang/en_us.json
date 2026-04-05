@@ -49,7 +49,10 @@
 
   "effect.race-mod.blurry_vision": "Blurry Vision",
 
-  "entity.minecraft.villager.rabbi": "Rabbi"
+  "entity.minecraft.villager.rabbi": "Rabbi",
+
+  "key.racemod.steal": "Steal KeyBind",
+  "category.racemod": "Race Mod"
 }
 
 
