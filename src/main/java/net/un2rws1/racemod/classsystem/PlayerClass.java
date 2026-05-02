@@ -9,7 +9,8 @@ public enum PlayerClass {
     JEW("jew", "Jew", ""),
     INDIAN("indian", "Indian", ""),
     CHINESE("chinese", "Chinese", ""),
-    MEXICAN("mexican", "Mexican", "");
+    MEXICAN("mexican", "Mexican", ""),
+    MUSLIM("muslim", "Muslim", "");
 
     private final String id;
     private final String displayName;

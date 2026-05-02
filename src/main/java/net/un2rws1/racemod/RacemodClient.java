@@ -25,6 +25,7 @@ import net.un2rws1.racemod.entity.ModEntities;
 import net.un2rws1.racemod.event.PlayerJoinHandler;
 import net.un2rws1.racemod.item.ModItems;
 import net.un2rws1.racemod.mixin.client.GameRendererAccessor;
+import net.un2rws1.racemod.network.MuslimRitualPayload;
 import net.un2rws1.racemod.networking.ModNetworking;
 import net.un2rws1.racemod.networking.OpenClassSelectionPayload;
 import net.un2rws1.racemod.networking.StealAttemptPayload;
@@ -35,6 +36,7 @@ import org.lwjgl.glfw.GLFW;
 public class RacemodClient implements ClientModInitializer{
     private static KeyBinding stealKey;
     private static boolean blurEnabled = false;
+    public static KeyBinding MUSLIM_RITUAL_KEY;
 
 
     @Override
@@ -59,6 +61,11 @@ public class RacemodClient implements ClientModInitializer{
                 }
                 ClientPlayNetworking.send(new StealAttemptPayload(targetId));
             }
+            while (MUSLIM_RITUAL_KEY.wasPressed()) {
+                ClientPlayNetworking.send(new MuslimRitualPayload(true));
+            }
+
+
             // blurr
             if (client.player == null || client.world == null) return;
 
@@ -68,7 +75,11 @@ public class RacemodClient implements ClientModInitializer{
                 blurEnabled = shouldBlur;
                 updateBlurShader(client, blurEnabled);
             }
+                    while (MUSLIM_RITUAL_KEY.wasPressed()) {
+                        ClientPlayNetworking.send(new MuslimRitualPayload(true));
+                    }
             });
+
 
 
         ClientPlayNetworking.registerGlobalReceiver(OpenClassSelectionPayload.ID, (payload, context) -> {
@@ -89,7 +100,14 @@ public class RacemodClient implements ClientModInitializer{
                 ClientClassState.setPlayerClass(parsed);
             });
         });
-
+        MUSLIM_RITUAL_KEY = KeyBindingHelper.registerKeyBinding(
+                new KeyBinding(
+                        "key.racemod.bomber_ritual",
+                        InputUtil.Type.KEYSYM,
+                        GLFW.GLFW_KEY_P,
+                        "category.racemod"
+                )
+        );
 
         System.out.println("[RaceMod] Client initializer loaded");
 

@@ -1,10 +1,13 @@
 package net.un2rws1.racemod.entity;
 
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.un2rws1.racemod.Racemod;
 
 public class ModEntities {
     public static final EntityType<PoopEntity> POOP =
@@ -16,6 +19,7 @@ public class ModEntities {
                             .trackingTickInterval(10)
                             .build()
             );
+
     public static void register() {
         System.out.println("Registering Mod Entities for race-mod");
     }

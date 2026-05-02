@@ -464,6 +464,29 @@ public final class ClassManager {
             case WHITE -> {
                 // No bonuses yet
             }
+            case MUSLIM -> {
+                EntityAttributeInstance maxHealth = player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+                EntityAttributeInstance movementSpeed = player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+
+                if (maxHealth != null && maxHealth.getModifier(HEALTH_MODIFIER_ID) == null) {
+                    maxHealth.addPersistentModifier(new EntityAttributeModifier(
+                            HEALTH_MODIFIER_ID,
+                            -3.5,
+                            EntityAttributeModifier.Operation.ADD_VALUE
+                    ));
+                }
+                if (movementSpeed != null && movementSpeed.getModifier(SPEED_MODIFIER_ID) == null) {
+                    movementSpeed.addPersistentModifier(new EntityAttributeModifier(
+                            SPEED_MODIFIER_ID,
+                            -0.03,
+                            EntityAttributeModifier.Operation.ADD_VALUE
+                    ));
+                }
+
+                if (player.getHealth() > player.getMaxHealth()) {
+                    player.setHealth(player.getMaxHealth());
+                }
+            }
 
             case BLACK -> {
                 EntityAttributeInstance maxHealth = player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);

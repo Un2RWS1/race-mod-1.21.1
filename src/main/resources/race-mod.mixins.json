@@ -29,7 +29,10 @@
 		"BedBlockMixin",
 		"PointOfInterestTypesAccessor",
 		"EndPortalBlockMixin",
-		"NetherPortalBlockMixin"
+		"NetherPortalBlockMixin",
+		"CraftingResultSlotMixin",
+		"CraftingScreenHandlerMixin",
+		"PlayerScreenHandlerMixin"
 	],
 
 	"injectors": {
