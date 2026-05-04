@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -66,8 +67,13 @@ public class Racemod implements ModInitializer {
 	public static final String MOD_ID = "race-mod";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	private static final int[] MUSLIM_WINDOWS = {7000, 10500, 12000, 13000, 22800};
-	private static final int WINDOW_LENGTH = 120;
+	private static final int WINDOW_LENGTH = 200;
 	private static final int REQUIRED_STILL_TICKS = 100;
+	//ramadam
+	private static final int DAYS_PER_YEAR = 36;
+	private static final int DAYS_PER_MONTH = 3;
+	private static final int RAMADAN_MONTH = 2;
+	private static final int SUNSET_TIME = 12000;
 
 	@Override
 	public void onInitialize() {
@@ -94,6 +100,8 @@ public class Racemod implements ModInitializer {
 		registerMuslimDeathExplosion();
 		MuslimExpolsionHeal();
 		MuslimBlowingUpWhenEatingPork();
+		RamadanCommandLine();
+		MuslimRamadan();
 
 		//classes (races) buffs debuffs and whatnot
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
@@ -276,7 +284,7 @@ public class Racemod implements ModInitializer {
 					state.setMuslimStartY(player.getY());
 					state.setMuslimStartZ(player.getZ());
 
-					player.sendMessage(Text.literal("Start Praying buddy"), true);
+					player.sendMessage(Text.literal("Praying started"), true);
 					world.playSound(
 							null,
 							player.getX(),
@@ -293,6 +301,7 @@ public class Racemod implements ModInitializer {
 
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+				tickMuslimRitual(player);
 				ClassState state = getState(player);
 				if (state == null) continue;
 				if (state.getMuslimDeathTimer() > 0) {
@@ -304,17 +313,14 @@ public class Racemod implements ModInitializer {
 
 				if (state.getMuslimDeathTimer() > 0) {
 					state.setMuslimDeathTimer(state.getMuslimDeathTimer() - 1);
-
 					if (state.getMuslimDeathTimer() % 20 == 0) {
 						player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASS.value(), 15.0F, 0.5F);
 					}
-
 					if (state.getMuslimDeathTimer() == 0) {
 						player.playSound(SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, 22.0F, 1.0F);
-						player.kill();
+					//	player.kill();
 					}
 
-					tickMuslimRitual(player);
 				}
 			}
 		});
@@ -374,8 +380,16 @@ public class Racemod implements ModInitializer {
 			int start = MUSLIM_WINDOWS[i];
 			int end = start + WINDOW_LENGTH;
 
-			if (timeOfDay >= start && timeOfDay < end) {
-				return i;
+			if (end <= 24000) {
+				if (timeOfDay >= start && timeOfDay < end) {
+					return i;
+				}
+			} else {
+				int wrappedEnd = end - 24000;
+
+				if (timeOfDay >= start || timeOfDay < wrappedEnd) {
+					return i;
+				}
 			}
 		}
 
@@ -419,7 +433,7 @@ public class Racemod implements ModInitializer {
 					player.getX(),
 					player.getY(),
 					player.getZ(),
-					SoundEvents.BLOCK_NOTE_BLOCK_PLING,
+					SoundEvents.ENTITY_FIREWORK_ROCKET_LARGE_BLAST_FAR,
 					SoundCategory.PLAYERS,
 					3.0F,
 					1.0F
@@ -622,6 +636,109 @@ public class Racemod implements ModInitializer {
 		thiefState.setStealTargetStartPos(target.getBlockPos());
 		thief.sendMessage(Text.literal("Doing what you do best, now make sure they don't move"), true);
 	}
+// =====================Ramadan=============
+private boolean isRamadanMonth(ServerWorld world) {
+	long day = world.getTimeOfDay() / 24000L;
+	int dayOfYear = (int) (day % DAYS_PER_YEAR);
+	int month = dayOfYear / DAYS_PER_MONTH;
+
+	return month == RAMADAN_MONTH;
+}
+
+	private boolean isBeforeSunset(ServerWorld world) {
+		long timeOfDay = world.getTimeOfDay() % 24000L;
+		return timeOfDay < SUNSET_TIME;
+	}
+
+	private boolean isForbiddenDuringRamadan(ItemStack stack) {
+		return stack.get(DataComponentTypes.FOOD) != null
+				|| stack.isOf(Items.POTION)
+				|| stack.isOf(Items.MILK_BUCKET)
+				|| stack.isOf(Items.HONEY_BOTTLE);
+	}
+	private void MuslimRamadan(){
+		UseItemCallback.EVENT.register((player, world, hand) -> {
+			if (world.isClient()) return TypedActionResult.pass(player.getStackInHand(hand));
+
+			if (!(player instanceof ServerPlayerEntity serverPlayer)) {
+				return TypedActionResult.pass(player.getStackInHand(hand));
+			}
+
+			ClassState state = getState(serverPlayer);
+			if (state == null) return TypedActionResult.pass(player.getStackInHand(hand));
+
+			if (getPlayerClass(player) != PlayerClass.MUSLIM) {
+				return TypedActionResult.pass(player.getStackInHand(hand));
+			}
+
+			ServerWorld serverWorld = serverPlayer.getServerWorld();
+			ItemStack stack = player.getStackInHand(hand);
+
+			if (isRamadanMonth(serverWorld)
+					&& isBeforeSunset(serverWorld)
+					&& isForbiddenDuringRamadan(stack)) {
+
+				player.sendMessage(
+						Text.literal("You cannot eat or drink until sunset during Ramadan"),
+						true
+				);
+
+				return TypedActionResult.fail(stack);
+			}
+
+			return TypedActionResult.pass(stack);
+		});
+	}
+	private long getTicksUntilRamadan(ServerWorld world) {
+		long day = world.getTimeOfDay() / 24000L;
+
+		int dayOfYear = (int) (day % DAYS_PER_YEAR);
+		int currentMonth = dayOfYear / DAYS_PER_MONTH;
+
+		if (currentMonth < RAMADAN_MONTH) {
+			int daysUntil = (RAMADAN_MONTH * DAYS_PER_MONTH) - dayOfYear;
+			return daysUntil * 24000L;
+		}
+
+		if (currentMonth == RAMADAN_MONTH) {
+			return 0;
+		}
+
+		int daysUntil = (DAYS_PER_YEAR - dayOfYear)
+				+ (RAMADAN_MONTH * DAYS_PER_MONTH);
+
+		return daysUntil * 24000L;
+	}
+
+
+	private String formatTicksToTimeLong(long ticks) {
+		long totalSeconds = ticks / 20L;
+
+		long days = totalSeconds / 86400;
+		long hours = (totalSeconds % 86400) / 3600;
+		long minutes = (totalSeconds % 3600) / 60;
+
+		return days + "d " + hours + "h " + minutes + "m";
+	}
+	private void RamadanCommandLine(){
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+			dispatcher.register(
+					CommandManager.literal("ramadantime")
+							.executes(context -> {
+								ServerPlayerEntity player = context.getSource().getPlayer();
+								ServerWorld world = player.getServerWorld();
+								long ticks = getTicksUntilRamadan(world);
+								String time = formatTicksToTimeLong(ticks);
+								if (ticks == 0) {
+									player.sendMessage(Text.literal("You are currently in Ramadan"), false);
+								} else {
+									player.sendMessage(Text.literal("Ramadan begins in " + time), false);
+								}
+								return 1;
+							})
+			);
+		});
+	}
 
 	private void MuslimExpolsionHeal() {
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
@@ -668,15 +785,6 @@ public class Racemod implements ModInitializer {
 		});
 	}
 
-	private int bomberLevel = 1;
-
-	public int getBomberLevel() {
-		return bomberLevel;
-	}
-
-	public void setBomberLevel(int level) {
-		this.bomberLevel = level;
-	}
 
 
 	private static void tickThiefSteal(ServerPlayerEntity thief, ClassState state) {
