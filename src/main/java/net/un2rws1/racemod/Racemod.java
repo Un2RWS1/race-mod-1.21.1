@@ -96,7 +96,7 @@ public class Racemod implements ModInitializer {
 		PlayerJoinHandler.register();
 		PlayerRespawnHandler.register();
 
-		//muslims
+		//Muslims
 		registerMuslimDeathExplosion();
 		MuslimExpolsionHeal();
 		MuslimBlowingUpWhenEatingPork();
@@ -318,7 +318,7 @@ public class Racemod implements ModInitializer {
 					}
 					if (state.getMuslimDeathTimer() == 0) {
 						player.playSound(SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, 22.0F, 1.0F);
-					//	player.kill();
+						player.kill();
 					}
 
 				}
@@ -766,7 +766,7 @@ private boolean isRamadanMonth(ServerWorld world) {
 			if (state == null) return;
 			if (getPlayerClass(player) != PlayerClass.MUSLIM) return;
 
-			float power = Math.min(8.0F, 2.5F + (player.experienceLevel * 0.1F));
+			float power = Math.min(8.0F, 1.0F + (player.experienceLevel * 0.1F));
 			ServerWorld world = player.getServerWorld();
 
 			world.createExplosion(
@@ -779,7 +779,7 @@ private boolean isRamadanMonth(ServerWorld world) {
 					power,
 					false,
 					World.ExplosionSourceType.NONE);
-			double powertext = power - 1.5;
+			double powertext = power;
 			String formatted = String.format("%.2f", powertext);
 			player.sendMessage(Text.literal("You blew up with a power of " + formatted), true);
 		});

@@ -47,8 +47,8 @@ public abstract class PiglinBrainMixin {
         if (piglin.getRandom().nextFloat() < 0.3f) {
             modified.add(new ItemStack(Items.EMERALD, 1));
         }
-        if (piglin.getRandom().nextFloat() < 0.2f) {
-            modified.add(new ItemStack(Items.GOLD_INGOT, 3));
+        if (piglin.getRandom().nextFloat() < 0.3f) {
+            modified.add(new ItemStack(Items.BLAZE_POWDER, 3));
         }
         if (piglin.getRandom().nextFloat() < 0.05f) {
             modified.add(new ItemStack(Items.GOLD_BLOCK, 1));

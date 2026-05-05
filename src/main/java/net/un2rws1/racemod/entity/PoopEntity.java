@@ -52,7 +52,7 @@ public class PoopEntity extends ThrownItemEntity {
 
         if (!this.getWorld().isClient) {
             ((ServerWorld) this.getWorld()).spawnParticles(
-                    ParticleTypes.WITCH,
+                    ParticleTypes.WITCH, //make it brown
                     this.getX(), this.getY(), this.getZ(),
                     20, // count
                     0.3, 0.3, 0.3, // spread
