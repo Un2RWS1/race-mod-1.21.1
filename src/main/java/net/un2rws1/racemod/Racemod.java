@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -16,6 +17,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,9 +30,11 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.village.VillagerProfession;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 import net.un2rws1.racemod.block.ModBlocks;
@@ -890,6 +894,32 @@ private boolean isRamadanMonth(ServerWorld world) {
 				player.playSound(SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, 100.0F, 0.3F);
 			}
 			return TypedActionResult.pass(player.getStackInHand(hand));
+		});
+	}
+
+	//===================================cant trade with rabbi=================================
+	private void MuslimsCantTradeWithRabbi(){
+		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+			if (world.isClient()) return ActionResult.PASS;
+
+			if (!(player instanceof ServerPlayerEntity serverPlayer)) {
+				return ActionResult.PASS;
+			}
+
+			if (!(entity instanceof VillagerEntity villager)) {
+				return ActionResult.PASS;
+			}
+
+			ClassState state = getState(serverPlayer);
+			if (state == null || getPlayerClass(player) != PlayerClass.MUSLIM) {
+				return ActionResult.PASS;
+			}
+
+			if (villager.getVillagerData().getProfession() == ModVillagerProfessions.RABBI) {
+				player.sendMessage(Text.literal("You're muslim, you cant do that"), true);
+				return ActionResult.FAIL;
+			}
+			return ActionResult.PASS;
 		});
 	}
 }
