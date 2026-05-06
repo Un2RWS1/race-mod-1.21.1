@@ -421,6 +421,10 @@ public class Racemod implements ModInitializer {
 			state.setMuslimStartX(player.getX());
 			state.setMuslimStartY(player.getY());
 			state.setMuslimStartZ(player.getZ());
+			player.sendMessage(Text.literal("You can't move while you pray"), true);
+			strikeMuslimFailure(player);
+			state.setMuslimRitualCompleted(true);
+			state.setMuslimChanneling(false);
 			return;
 		}
 
@@ -440,7 +444,7 @@ public class Racemod implements ModInitializer {
 					SoundEvents.ENTITY_FIREWORK_ROCKET_LARGE_BLAST_FAR,
 					SoundCategory.PLAYERS,
 					3.0F,
-					1.0F
+					5.0F
 			);
 		}
 	}
