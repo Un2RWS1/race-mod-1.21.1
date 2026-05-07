@@ -22,6 +22,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
@@ -106,6 +107,7 @@ public class Racemod implements ModInitializer {
 		MuslimBlowingUpWhenEatingPork();
 		RamadanCommandLine();
 		MuslimRamadan();
+		MuslimsCantTradeWithRabbi();
 
 		//classes (races) buffs debuffs and whatnot
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
@@ -352,7 +354,7 @@ public class Racemod implements ModInitializer {
 				state.setMuslimChanneling(false);
 				state.setMuslimStillTicks(0);
 
-				player.sendMessage(Text.literal("Time to Pray buddy"), true);
+				player.networkHandler.sendPacket(new TitleS2CPacket(Text.literal("Time to pray buddy").formatted(Formatting.BOLD)));
 				world.playSound(
 						null,
 						player.getX(),
@@ -369,11 +371,21 @@ public class Racemod implements ModInitializer {
 		if (!state.isMuslimRitualCompleted()
 				&& state.getMuslimWindowEndTick() > 0
 				&& world.getTime() > state.getMuslimWindowEndTick()) {
-
 			strikeMuslimFailure(player);
 			state.setMuslimRitualCompleted(true);
 			state.setMuslimChanneling(false);
 			state.setMuslimStillTicks(0);
+			player.networkHandler.sendPacket(new TitleS2CPacket(Text.literal("You Forgot to Pray").formatted(Formatting.RED)));
+			world.playSound(
+					null,
+					player.getX(),
+					player.getY(),
+					player.getZ(),
+					SoundEvents.ENTITY_PARROT_IMITATE_PILLAGER,
+					SoundCategory.PLAYERS,
+					10.0F,
+					0.5F
+			);
 		}
 
 		tickMuslimChanneling(player, state);
@@ -421,7 +433,17 @@ public class Racemod implements ModInitializer {
 			state.setMuslimStartX(player.getX());
 			state.setMuslimStartY(player.getY());
 			state.setMuslimStartZ(player.getZ());
-			player.sendMessage(Text.literal("You can't move while you pray"), true);
+			player.networkHandler.sendPacket(new TitleS2CPacket(Text.literal("You can't move while you pray").formatted(Formatting.RED)));
+			world.playSound(
+					null,
+					player.getX(),
+					player.getY(),
+					player.getZ(),
+					SoundEvents.ENTITY_PARROT_IMITATE_PILLAGER,
+					SoundCategory.PLAYERS,
+					10.0F,
+					0.5F
+			);
 			strikeMuslimFailure(player);
 			state.setMuslimRitualCompleted(true);
 			state.setMuslimChanneling(false);
@@ -435,7 +457,7 @@ public class Racemod implements ModInitializer {
 			state.setMuslimChanneling(false);
 			state.setMuslimStillTicks(0);
 
-			player.sendMessage(Text.literal("Praying complete."), true);
+			player.networkHandler.sendPacket(new TitleS2CPacket(Text.literal("Praying Completed").formatted(Formatting.GOLD)));
 			world.playSound(
 					null,
 					player.getX(),
@@ -521,12 +543,12 @@ public class Racemod implements ModInitializer {
 			if (shouldBeAdventure) {
 				if (player.interactionManager.getGameMode() != GameMode.ADVENTURE) {
 					player.changeGameMode(GameMode.ADVENTURE);
-					player.sendMessage(Text.literal("It is the Shabbot, you can't work."), false);
+					player.networkHandler.sendPacket(new TitleS2CPacket(Text.literal("It's the Shabbot, you can't work today")));
 				}
 			} else {
 				if (player.interactionManager.getGameMode() != GameMode.SURVIVAL) {
 					player.changeGameMode(GameMode.SURVIVAL);
-					player.sendMessage(Text.literal("The Shabbot has passed, you can work again"), false);
+					player.networkHandler.sendPacket(new TitleS2CPacket(Text.literal("The Shabbot has passed, you can work again")));
 				}
 			}
 
@@ -893,7 +915,7 @@ private boolean isRamadanMonth(ServerWorld world) {
 			}
 			ItemStack stack = player.getStackInHand(hand);
 			if (stack.isOf(Items.PORKCHOP) || stack.isOf(Items.COOKED_PORKCHOP)) {
-				state.setMuslimDeathTimer(40); // 2 seconds
+				state.setMuslimDeathTimer(100); // 5 seconds
 				player.sendMessage(Text.literal("Stop sinning"), true);
 				player.playSound(SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, 100.0F, 0.3F);
 			}
