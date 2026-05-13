@@ -64,6 +64,15 @@ public class RacemodClient implements ClientModInitializer{
             while (MUSLIM_RITUAL_KEY.wasPressed()) {
                 ClientPlayNetworking.send(new MuslimRitualPayload(true));
             }
+            PlayerClass playerClass = ClientClassState.getPlayerClass();
+            if (client.player == null) return;
+            if(playerClass == PlayerClass.MEXICAN) {
+                    if (client.player.getHungerManager().getFoodLevel() < 20) {
+                    client.options.sprintKey.setPressed(false);
+                    client.player.setSprinting(false);
+                }
+            }
+
 
 
             // blurr
@@ -114,7 +123,7 @@ public class RacemodClient implements ClientModInitializer{
     }
     // blur
     private static boolean shouldChineseBeBlurred(MinecraftClient client) {
-         boolean isChinese = ClientClassState.getPlayerClass() == PlayerClass.CHINESE;
+        boolean isChinese = ClientClassState.getPlayerClass() == PlayerClass.CHINESE;
         ItemStack headStack = client.player.getEquippedStack(EquipmentSlot.HEAD);
         boolean wearingGlasses = headStack.isOf(ModItems.GLASSES);
         return isChinese && !wearingGlasses;

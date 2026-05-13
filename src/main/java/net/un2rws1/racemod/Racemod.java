@@ -326,7 +326,6 @@ public class Racemod implements ModInitializer {
 						player.playSound(SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, 22.0F, 1.0F);
 						player.kill();
 					}
-
 				}
 			}
 		});
@@ -566,6 +565,9 @@ public class Racemod implements ModInitializer {
 		if (playerClass == PlayerClass.BLACK) {
 			tickThiefSteal(player, state);
 		}
+		if (getPlayerClass(player) == PlayerClass.MEXICAN && player.getHungerManager().getFoodLevel() < 20) {
+			player.setSprinting(false);
+		}
 
 	}
 
@@ -583,6 +585,11 @@ public class Racemod implements ModInitializer {
 	private static void handleOreReward(ServerPlayerEntity player, Item input, Item output) {
 		int count = countItem(player, input);
 		int fullStacks = count / 64;
+		if (input == ModItems.GOLDEN_COINS) {
+			fullStacks = count / 16;
+		}	else if(input == Items.DIAMOND){
+				fullStacks = count/32;
+		}
 
 		if (fullStacks > 0) {
 			ItemStack reward = new ItemStack(output, fullStacks);
@@ -615,9 +622,12 @@ public class Racemod implements ModInitializer {
 		fullStacks += emeraldCount / 64;
 		int goldCount = countItem(player, Items.GOLD_INGOT);
 		fullStacks += goldCount / 64;
+		int coinCount = countItem(player, ModItems.GOLDEN_COINS);
+		fullStacks += coinCount / 16;
 		handleOreReward(player, Items.DIAMOND, Items.DIAMOND);
 		handleOreReward(player, Items.GOLD_INGOT, Items.GOLD_INGOT);
 		handleOreReward(player, Items.EMERALD, Items.EMERALD);
+		handleOreReward(player, ModItems.GOLDEN_COINS, ModItems.GOLDEN_COINS);
 
 		player.sendMessage(Text.literal("Your interest came in to " + fullStacks + " valuable ores. Congrats on being a JEW!"), true);
 

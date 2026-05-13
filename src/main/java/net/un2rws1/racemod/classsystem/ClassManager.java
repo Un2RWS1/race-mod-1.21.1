@@ -90,7 +90,6 @@ public final class ClassManager {
                     player.getInventory().setStack(i, ItemStack.EMPTY);
                 }
             }
-
             if (player.getOffHandStack().isOf(ModItems.KIPPAH)) {
                 player.getInventory().offHand.set(0, ItemStack.EMPTY);
             }
@@ -121,6 +120,24 @@ public final class ClassManager {
 
         player.getInventory().markDirty();
         player.currentScreenHandler.sendContentUpdates();
+    }
+    //=========================height============
+    public static void applyClassScale(ServerPlayerEntity player) {
+        EntityAttributeInstance scale =
+        player.getAttributeInstance(EntityAttributes.GENERIC_SCALE);
+        PlayerClass playerClass = getPlayerClass((ServerPlayerEntity) player);
+
+
+
+        if (playerClass == PlayerClass.BLACK) {
+            scale.setBaseValue(1.28);
+        } else if (playerClass == PlayerClass.CHINESE || playerClass == PlayerClass.INDIAN) {
+            scale.setBaseValue(0.82);
+        } else {
+            scale.setBaseValue(1.0);
+        }
+
+        player.calculateDimensions();
     }
 
 
@@ -362,7 +379,6 @@ public final class ClassManager {
             player.sendMessage(Text.literal("You have already selected a Race."), false);
             player.setHealth(player.getMaxHealth());
             return false;
-
         }
 
         ClassState state = getState(player);
@@ -377,6 +393,8 @@ public final class ClassManager {
                 player.dropItem(stack, false);
             }
         }
+        applyClassScale((ServerPlayerEntity) player);
+
         if (chosenClass.getId().equalsIgnoreCase("mexican")) {
             ItemStack stack = new ItemStack(ModItems.GREEN_CARD, 1);
             if (!player.getInventory().insertStack(stack)) {
@@ -404,6 +422,7 @@ public final class ClassManager {
                 player.dropItem(stack, false);
             }
         }
+        applyClassScale((ServerPlayerEntity) player);
         if (newClass.getId().equalsIgnoreCase("mexican")) {
             ItemStack stack = new ItemStack(ModItems.GREEN_CARD, 1);
             if (!player.getInventory().insertStack(stack)) {
@@ -411,17 +430,13 @@ public final class ClassManager {
             }
         }
         applyClassEffects(player, newClass);
-
-
         player.sendMessage(Text.literal("Your race has been set to " + newClass.getDisplayName() + "."), false);
     }
 
     public static void clearClass(ServerPlayerEntity player) {
         ClassState state = getState(player);
         state.clear();
-
         removeClassEffects(player);
-
         player.sendMessage(Text.literal("You are now White."), false);
     }
 

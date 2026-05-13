@@ -1,6 +1,10 @@
 package net.un2rws1.racemod.mixin;
 
 import net.minecraft.component.type.FoodComponent;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -14,8 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
-public class PlayerEntityMixin {
-
+public abstract class PlayerEntityMixin {
     @Inject(method = "eatFood", at = @At("TAIL"))
     private void racemod$bonusFood(World world, ItemStack stack, FoodComponent foodComponent, CallbackInfoReturnable<ItemStack> cir) {
         PlayerEntity player = (PlayerEntity) (Object) this;
