@@ -55,6 +55,7 @@ import net.un2rws1.racemod.networking.ModNetworking;
 import net.un2rws1.racemod.networking.StealAttemptPayload;
 import net.un2rws1.racemod.networking.SyncClassPayload;
 import net.un2rws1.racemod.sound.ModSounds;
+import net.un2rws1.racemod.util.Green_Card_Helper;
 import net.un2rws1.racemod.villager.ModPointOfInterestTypes;
 import net.un2rws1.racemod.villager.ModVillagerProfessions;
 import net.un2rws1.racemod.villager.ModVillagerTrades;
@@ -568,7 +569,7 @@ public class Racemod implements ModInitializer {
 		if (getPlayerClass(player) == PlayerClass.MEXICAN && player.getHungerManager().getFoodLevel() < 20) {
 			player.setSprinting(false);
 		}
-
+		Green_Card_Helper.enforceMexicanTicketOffhand(player);
 	}
 
 	private static int countItem(ServerPlayerEntity player, Item item) {

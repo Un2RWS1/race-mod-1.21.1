@@ -9,6 +9,7 @@ import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.Hand;
 import net.un2rws1.racemod.effect.ModEffects;
 import net.un2rws1.racemod.item.ModItems;
 import net.un2rws1.racemod.networking.OpenClassSelectionPayload;
@@ -281,7 +282,7 @@ public final class ClassManager {
                 player.addStatusEffect(new StatusEffectInstance(
                         StatusEffects.SPEED,
                         40,
-                        1,
+                        0,
                         true,
                         false,
                         false
@@ -289,7 +290,7 @@ public final class ClassManager {
                 player.addStatusEffect(new StatusEffectInstance(
                         StatusEffects.STRENGTH,
                         40,
-                        1,
+                        0,
                         true,
                         false,
                         false
@@ -396,10 +397,7 @@ public final class ClassManager {
         applyClassScale((ServerPlayerEntity) player);
 
         if (chosenClass.getId().equalsIgnoreCase("mexican")) {
-            ItemStack stack = new ItemStack(ModItems.GREEN_CARD, 1);
-            if (!player.getInventory().insertStack(stack)) {
-                player.dropItem(stack, false);
-            }
+            player.setStackInHand(Hand.OFF_HAND, new ItemStack(ModItems.GREEN_CARD));
         }
         applyClassEffects(player, chosenClass);
         System.out.println("[RaceMod] Sending race sync: " + chosenClass.getId());
@@ -424,10 +422,7 @@ public final class ClassManager {
         }
         applyClassScale((ServerPlayerEntity) player);
         if (newClass.getId().equalsIgnoreCase("mexican")) {
-            ItemStack stack = new ItemStack(ModItems.GREEN_CARD, 1);
-            if (!player.getInventory().insertStack(stack)) {
-                player.dropItem(stack, false);
-            }
+            player.setStackInHand(Hand.OFF_HAND, new ItemStack(ModItems.GREEN_CARD));
         }
         applyClassEffects(player, newClass);
         player.sendMessage(Text.literal("Your race has been set to " + newClass.getDisplayName() + "."), false);
