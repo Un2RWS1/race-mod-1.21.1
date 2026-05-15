@@ -15,14 +15,14 @@ public class ModVillagerTrades {
         TradeOfferHelper.registerVillagerOffers(ModVillagerProfessions.RABBI, 1, factories -> {
             factories.add((entity, random) -> new TradeOffer(
                     new TradedItem(ModItems.GOLDEN_COINS, 7),
-                    new ItemStack(Items.COAL, 6),
-                    16, 2, 0.05f
+                    new ItemStack(Items.COAL, 3),
+                    5, 1, 0.05f
             ));
 
             factories.add((entity, random) -> new TradeOffer(
                     new TradedItem(ModItems.GOLDEN_COINS, 8),
-                    new ItemStack(Items.CHARCOAL, 6),
-                    16, 2, 0.05f
+                    new ItemStack(Items.CHARCOAL, 3),
+                    10, 1, 0.05f
             ));
         });
 
@@ -30,14 +30,14 @@ public class ModVillagerTrades {
         TradeOfferHelper.registerVillagerOffers(ModVillagerProfessions.RABBI, 2, factories -> {
             factories.add((entity, random) -> new TradeOffer(
                     new TradedItem(ModItems.GOLDEN_COINS, 16),
-                    new ItemStack(Items.IRON_BLOCK, 2),
-                    5, 15, 0.05f
+                    new ItemStack(Items.IRON_BLOCK, 1),
+                    5, 1, 0.05f
             ));
 
             factories.add((entity, random) -> new TradeOffer(
-                    new TradedItem(ModItems.GOLDEN_COINS, 32),
-                    new ItemStack(Items.EMERALD, 16),
-                    7, 15, 0.05f
+                    new TradedItem(ModItems.GOLDEN_COINS, 16),
+                    new ItemStack(Items.EMERALD, 8),
+                    5, 1, 0.05f
             ));
         });
 
@@ -46,12 +46,12 @@ public class ModVillagerTrades {
             factories.add((entity, random) -> new TradeOffer(
                     new TradedItem(ModItems.GOLDEN_COINS, 16),
                     new ItemStack(Items.GOLDEN_APPLE, 1),
-                    8, 20, 0.05f
+                    3, 1, 0.05f
             ));
             factories.add((entity, random) -> new TradeOffer(
                     new TradedItem(ModItems.GOLDEN_COINS, 32),
                     new ItemStack(Items.EXPERIENCE_BOTTLE, 8),
-                    8, 20, 0.05f
+                    3, 1, 0.05f
             ));
         });
 
@@ -60,12 +60,12 @@ public class ModVillagerTrades {
             factories.add((entity, random) -> new TradeOffer(
                     new TradedItem(ModItems.GOLDEN_COINS, 32),
                     new ItemStack(Items.ENDER_PEARL, 3),
-                    6, 30, 0.05f
+                    2, 1, 0.05f
             ));
             factories.add((entity, random) -> new TradeOffer(
                     new TradedItem(ModItems.GOLDEN_COINS, 64),
                     new ItemStack(Items.DIAMOND_BLOCK, 2),
-                    6, 30, 0.05f
+                    2, 1, 0.05f
             ));
         });
 
@@ -74,12 +74,12 @@ public class ModVillagerTrades {
             factories.add((entity, random) -> new TradeOffer(
                     new TradedItem(ModItems.GOLDEN_COINS, 64),
                     new ItemStack(Items.ENCHANTED_GOLDEN_APPLE, 1),
-                    3, 50, 0.05f
+                    1, 20, 0.05f
             ));
             factories.add((entity, random) -> new TradeOffer(
                     new TradedItem(ModItems.GOLDEN_COINS, 64),
                     new ItemStack(Items.TOTEM_OF_UNDYING, 1),
-                    3, 50, 0.05f
+                    1, 20, 0.05f
             ));
 
         });

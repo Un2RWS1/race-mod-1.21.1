@@ -3,10 +3,10 @@
   "category" : "misc",
   "key": {
     "#": {
-      "item": "minecraft:gold_block"
+      "item": "minecraft:gold_ingot"
     },
     "B": {
-      "item": "minecraft:gold_nugget"
+      "item": "minecraft:raw_gold"
     }
   },
 
