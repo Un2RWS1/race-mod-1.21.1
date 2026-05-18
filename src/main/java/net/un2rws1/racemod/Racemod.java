@@ -17,12 +17,14 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
+import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
@@ -38,6 +40,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.village.VillagerProfession;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeKeys;
 import net.un2rws1.racemod.block.ModBlocks;
 import net.un2rws1.racemod.classsystem.ClassAttachmentTypes;
 import net.un2rws1.racemod.classsystem.ClassManager;
@@ -570,6 +573,48 @@ public class Racemod implements ModInitializer {
 			player.setSprinting(false);
 		}
 		Green_Card_Helper.enforceMexicanTicketOffhand(player);
+
+//=============================== biome stuff
+		if (playerClass == PlayerClass.BLACK) {
+
+			boolean inJungle = player.getWorld()
+					.getBiome(player.getBlockPos())
+					.isIn(BiomeTags.IS_JUNGLE);
+			if (inJungle) {
+				if (player.getHungerManager().getFoodLevel() < 7) {
+					player.getHungerManager().setFoodLevel(7);
+				}
+				player.addStatusEffect(new StatusEffectInstance(
+						StatusEffects.JUMP_BOOST,
+						5,
+						1,
+						false,
+						false,
+						true
+				));
+			}
+		}
+		if (playerClass == PlayerClass.MUSLIM) {
+			boolean inMesa = player.getWorld()
+					.getBiome(player.getBlockPos())
+					.isIn(BiomeTags.IS_BADLANDS);
+			boolean inDesert = player.getWorld()
+					.getBiome(player.getBlockPos())
+					.matchesKey(BiomeKeys.DESERT);
+			if (inMesa && inDesert) {
+				if (player.getHungerManager().getFoodLevel() < 7) {
+					player.getHungerManager().setFoodLevel(7);
+				}
+				player.addStatusEffect(new StatusEffectInstance(
+						StatusEffects.NIGHT_VISION,
+						5,
+						0,
+						false,
+						false,
+						true
+				));
+			}
+		}
 	}
 
 	private static int countItem(ServerPlayerEntity player, Item item) {
@@ -581,6 +626,9 @@ public class Racemod implements ModInitializer {
 			}
 		}
 		return count;
+
+
+
 	}
 
 	private static void handleOreReward(ServerPlayerEntity player, Item input, Item output) {
