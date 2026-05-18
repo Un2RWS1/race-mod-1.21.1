@@ -28,10 +28,7 @@ import net.un2rws1.racemod.event.PlayerJoinHandler;
 import net.un2rws1.racemod.item.ModItems;
 import net.un2rws1.racemod.mixin.client.GameRendererAccessor;
 import net.un2rws1.racemod.network.MuslimRitualPayload;
-import net.un2rws1.racemod.networking.ModNetworking;
-import net.un2rws1.racemod.networking.OpenClassSelectionPayload;
-import net.un2rws1.racemod.networking.StealAttemptPayload;
-import net.un2rws1.racemod.networking.SyncClassPayload;
+import net.un2rws1.racemod.networking.*;
 import org.lwjgl.glfw.GLFW;
 
 
@@ -39,6 +36,7 @@ public class RacemodClient implements ClientModInitializer{
     private static KeyBinding stealKey;
     private static boolean blurEnabled = false;
     public static KeyBinding MUSLIM_RITUAL_KEY;
+    private static KeyBinding summonGolemKey;
 
 
     @Override
@@ -51,6 +49,12 @@ public class RacemodClient implements ClientModInitializer{
                 "key.racemod.steal",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_B,
+                "category.racemod"
+        ));
+        summonGolemKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.racemod.summon_golem",
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_I,
                 "category.racemod"
         ));
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -73,6 +77,11 @@ public class RacemodClient implements ClientModInitializer{
                     client.options.sprintKey.setPressed(false);
                     client.player.setSprinting(false);
                 }
+            }
+            while (summonGolemKey.wasPressed()) {
+                if (client.player == null || client.world == null) return;
+
+                ClientPlayNetworking.send(new SummonGolemPayload());
             }
 
 

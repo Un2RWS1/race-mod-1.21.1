@@ -18,6 +18,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
@@ -56,6 +57,7 @@ import net.un2rws1.racemod.loot.ModLootTableModifiers;
 import net.un2rws1.racemod.network.MuslimRitualPayload;
 import net.un2rws1.racemod.networking.ModNetworking;
 import net.un2rws1.racemod.networking.StealAttemptPayload;
+import net.un2rws1.racemod.networking.SummonGolemPayload;
 import net.un2rws1.racemod.networking.SyncClassPayload;
 import net.un2rws1.racemod.sound.ModSounds;
 import net.un2rws1.racemod.util.Green_Card_Helper;
@@ -112,6 +114,23 @@ public class Racemod implements ModInitializer {
 		RamadanCommandLine();
 		MuslimRamadan();
 		MuslimsCantTradeWithRabbi();
+
+		//Calling Golem
+		PayloadTypeRegistry.playC2S().register(
+				SummonGolemPayload.ID,
+				SummonGolemPayload.CODEC
+		);
+
+		ServerPlayNetworking.registerGlobalReceiver(
+				SummonGolemPayload.ID,
+				(payload, context) -> {
+					ServerPlayerEntity player = context.player();
+
+					context.server().execute(() -> {
+						handleGolemSummon(player);
+					});
+				}
+		);
 
 		//classes (races) buffs debuffs and whatnot
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
@@ -615,6 +634,10 @@ public class Racemod implements ModInitializer {
 				));
 			}
 		}
+		//=======================summoning golem===============
+		if (playerClass == PlayerClass.JEW) {
+			tickMageGolemSummon(player, state);
+		}
 	}
 
 	private static int countItem(ServerPlayerEntity player, Item item) {
@@ -1006,6 +1029,88 @@ private boolean isRamadanMonth(ServerWorld world) {
 			}
 			return ActionResult.PASS;
 		});
+	}
+
+	//=====================Summon Golem====================
+	public static final int GOLEM_GOLD_COST = 65;
+	public static final long GOLEM_SUMMON_TIME_TICKS = 60L; // 3 seconds
+
+	public static void handleGolemSummon(ServerPlayerEntity player) {
+		ClassState state = getState(player);
+		PlayerClass playerClass = PlayerClass.fromId(state.getSelectedClassId());
+
+		if (playerClass != PlayerClass.JEW) {
+			return;
+		}
+
+		if (state.getGolemSummonStartTick() != -1L) {
+			player.sendMessage(Text.literal("Chill, an Iron Golem is already on the way"), true);
+			return;
+		}
+
+		if (countItem(player, ModItems.GOLDEN_COINS) < GOLEM_GOLD_COST) {
+			player.sendMessage(Text.literal("You need 65 golden coins to call the Iron Golem."), true);
+			return;
+		}
+
+		state.setGolemSummonStartTick(player.getServerWorld().getTime());
+		player.sendMessage(Text.literal("Calling the Iron Golem"), true);
+	}
+	private static void tickMageGolemSummon(ServerPlayerEntity player, ClassState state) {
+		long startTick = state.getGolemSummonStartTick();
+		if (startTick == -1L) return;
+
+		long now = player.getServerWorld().getTime();
+
+		if (now - startTick < GOLEM_SUMMON_TIME_TICKS) {
+			return;
+		}
+
+		if (countItem(player, ModItems.GOLDEN_COINS) < GOLEM_GOLD_COST) {
+			player.sendMessage(Text.literal("You don't have 65 Golden coins"), true);
+			state.clearGolemSummon();
+			return;
+		}
+
+		removeItem(player, ModItems.GOLDEN_COINS, GOLEM_GOLD_COST);
+
+		IronGolemEntity golem = EntityType.IRON_GOLEM.create(player.getServerWorld());
+		if (golem == null) {
+			state.clearGolemSummon();
+			return;
+		}
+
+		golem.refreshPositionAndAngles(
+				player.getX(),
+				player.getY(),
+				player.getZ(),
+				player.getYaw(),
+				0.0F
+		);
+
+		player.getServerWorld().spawnEntity(golem);
+
+		player.sendMessage(Text.literal("You called an Iron Golem"), true);
+		state.clearGolemSummon();
+	}
+	private static void removeItem(ServerPlayerEntity player, Item item, int amount) {
+		int remaining = amount;
+
+		for (int i = 0; i < player.getInventory().size(); i++) {
+			ItemStack stack = player.getInventory().getStack(i);
+
+			if (!stack.isOf(item)) continue;
+
+			int removeAmount = Math.min(remaining, stack.getCount());
+			stack.decrement(removeAmount);
+			remaining -= removeAmount;
+
+			if (remaining <= 0) {
+				break;
+			}
+		}
+
+		player.getInventory().markDirty();
 	}
 }
 

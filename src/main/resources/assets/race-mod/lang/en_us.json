@@ -53,7 +53,8 @@
 
   "key.racemod.steal": "Steal KeyBind",
   "key.racemod.bomber_ritual": "Muslim Pray",
-  "category.racemod": "Race Mod"
+  "category.racemod": "Race Mod",
+  "key.racemod.summon_golem": "Call Iron Golem"
 }
 
 

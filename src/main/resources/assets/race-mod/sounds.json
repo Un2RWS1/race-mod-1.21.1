@@ -54,5 +54,13 @@
         "stream": true
       }
     ]
+  },
+  "custom_music": {
+    "sounds": [
+      {
+        "name": "race-mod:music/BJE",
+        "stream": true
+      }
+    ]
   }
 }

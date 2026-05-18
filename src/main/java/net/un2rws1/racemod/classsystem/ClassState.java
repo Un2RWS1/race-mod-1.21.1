@@ -256,5 +256,20 @@ public class ClassState
     //================================overheal chinese====================================
     public long lastChineseOverhealDecayTime = 0L;
 
+    //================================Summon Golem============
+    private long golemSummonStartTick = -1L;
+
+    public long getGolemSummonStartTick() {
+        return golemSummonStartTick;
+    }
+
+    public void setGolemSummonStartTick(long golemSummonStartTick) {
+        this.golemSummonStartTick = golemSummonStartTick;
+    }
+
+    public void clearGolemSummon() {
+        this.golemSummonStartTick = -1L;
+    }
+
 }
 
