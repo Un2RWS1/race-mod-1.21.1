@@ -619,18 +619,21 @@ public class Racemod implements ModInitializer {
 			boolean inDesert = player.getWorld()
 					.getBiome(player.getBlockPos())
 					.matchesKey(BiomeKeys.DESERT);
-			if (inMesa && inDesert) {
+			if (inMesa || inDesert) {
 				if (player.getHungerManager().getFoodLevel() < 7) {
 					player.getHungerManager().setFoodLevel(7);
 				}
-				player.addStatusEffect(new StatusEffectInstance(
-						StatusEffects.NIGHT_VISION,
-						5,
-						0,
-						false,
-						false,
-						true
-				));
+				StatusEffectInstance current = player.getStatusEffect(StatusEffects.NIGHT_VISION);
+				if (current == null || current.getDuration() < 220) {
+					player.addStatusEffect(new StatusEffectInstance(
+							StatusEffects.NIGHT_VISION,
+							300, // 15 seconds
+							0,
+							false,
+							false,
+							false
+					));
+				}
 			}
 		}
 		//=======================summoning golem===============
@@ -1056,6 +1059,7 @@ private boolean isRamadanMonth(ServerWorld world) {
 		player.sendMessage(Text.literal("Calling the Iron Golem"), true);
 	}
 	private static void tickMageGolemSummon(ServerPlayerEntity player, ClassState state) {
+		ServerWorld world = player.getServerWorld();
 		long startTick = state.getGolemSummonStartTick();
 		if (startTick == -1L) return;
 
@@ -1090,6 +1094,17 @@ private boolean isRamadanMonth(ServerWorld world) {
 		player.getServerWorld().spawnEntity(golem);
 
 		player.sendMessage(Text.literal("You called an Iron Golem"), true);
+		world.playSound(
+				null,
+				player.getX(),
+				player.getY(),
+				player.getZ(),
+				SoundEvents.ENTITY_IRON_GOLEM_REPAIR,
+				SoundCategory.PLAYERS,
+				5.0F,
+				1F
+		);
+
 		state.clearGolemSummon();
 	}
 	private static void removeItem(ServerPlayerEntity player, Item item, int amount) {

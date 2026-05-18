@@ -38,14 +38,14 @@ public class ModMusicPlayer {
                 return;
             }
 
-            if (RANDOM.nextInt(1000) == 0) {
+            if (RANDOM.nextInt(50) == 0) {
 
                 SoundEvent track = MUSIC_TRACKS[
                         RANDOM.nextInt(MUSIC_TRACKS.length)
                         ];
                 currentSound = PositionedSoundInstance.music(track);
                 client.getSoundManager().play(currentSound);
-                musicTimer = 6000;
+                musicTimer = 1000;
             }
         });
     }
