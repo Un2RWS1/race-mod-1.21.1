@@ -42,8 +42,15 @@ public class ModSounds {
     public static final SoundEvent MIKU = registerSoundEvent("miku");
     public static final RegistryKey<JukeboxSong> MIKU_KEY =
             RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Identifier.of(Racemod.MOD_ID, "miku"));
-    public static final SoundEvent BJE = registerSoundEvent("beyond_journeys_end");
 
+    public static final SoundEvent BJE = registerSoundEvent("bje");
+    public static final SoundEvent JOALT = registerSoundEvent("joalt");
+    public static final SoundEvent WTBMWG = registerSoundEvent("wtbmwg");
+    public static final SoundEvent D = registerSoundEvent("d");
+    public static final SoundEvent OLA = registerSoundEvent("ola");
+    public static final SoundEvent SFTB = registerSoundEvent("sftb");
+    public static final SoundEvent TFEO = registerSoundEvent("tfeo");
+    public static final SoundEvent TTFA = registerSoundEvent("ttfa");
 
 
 

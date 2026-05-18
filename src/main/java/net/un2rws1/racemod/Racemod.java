@@ -47,6 +47,7 @@ import net.un2rws1.racemod.classsystem.ClassAttachmentTypes;
 import net.un2rws1.racemod.classsystem.ClassManager;
 import net.un2rws1.racemod.classsystem.ClassState;
 import net.un2rws1.racemod.classsystem.PlayerClass;
+import net.un2rws1.racemod.client.ModMusicPlayer;
 import net.un2rws1.racemod.command.ClassCommand;
 import net.un2rws1.racemod.effect.ModEffects;
 import net.un2rws1.racemod.entity.ModEntities;
@@ -91,7 +92,6 @@ public class Racemod implements ModInitializer {
 
 		ModBlocks.registerModBlocks();
 		ModItems.registerModItems();
-
 		ModItemGroups.registerItemGroups();
 		ModSounds.registerSounds();
 		ModEntities.register();
@@ -137,7 +137,6 @@ public class Racemod implements ModInitializer {
 			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
 				ClassManager.tickPlayer(player);
 			}
-
 		});
 		ServerTickEvents.START_SERVER_TICK.register(server -> {
 			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {

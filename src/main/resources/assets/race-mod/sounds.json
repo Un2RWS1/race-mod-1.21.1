@@ -55,10 +55,66 @@
       }
     ]
   },
-  "custom_music": {
+  "bje": {
     "sounds": [
       {
-        "name": "race-mod:music/BJE",
+        "name": "race-mod:music/bje",
+        "stream": true
+      }
+    ]
+  },
+  "joalt": {
+    "sounds": [
+      {
+        "name": "race-mod:music/joalt",
+        "stream": true
+      }
+    ]
+  },
+  "wtbmwg": {
+    "sounds": [
+      {
+        "name": "race-mod:music/wtbmwg",
+        "stream": true
+      }
+    ]
+  },
+  "d": {
+    "sounds": [
+      {
+        "name": "race-mod:music/d",
+        "stream": true
+      }
+    ]
+  },
+  "ola": {
+    "sounds": [
+      {
+        "name": "race-mod:music/ola",
+        "stream": true
+      }
+    ]
+  },
+  "sftb": {
+    "sounds": [
+      {
+        "name": "race-mod:music/sftb",
+        "stream": true
+      }
+    ]
+  },
+  "tfeo": {
+    "sounds": [
+      {
+        "name": "race-mod:music/tfeo",
+        "stream": true
+      }
+    ]
+  },
+  "ttfa": {
+    "sounds": [
+      {
+        "name": "race-mod:music/ttfa",
         "stream": true
       }
     ]

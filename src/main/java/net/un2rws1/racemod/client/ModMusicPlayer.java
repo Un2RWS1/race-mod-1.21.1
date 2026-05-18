@@ -1,9 +1,8 @@
 package net.un2rws1.racemod.client;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.un2rws1.racemod.sound.ModSounds;
 
 import java.util.Random;
@@ -11,13 +10,26 @@ import java.util.Random;
 public class ModMusicPlayer {
 
     private static final Random RANDOM = new Random();
+
+    private static final SoundEvent[] MUSIC_TRACKS = {
+            ModSounds.BJE,
+            ModSounds.JOALT,
+            ModSounds.WTBMWG,
+            ModSounds.D,
+            ModSounds.OLA,
+            ModSounds.SFTB,
+            ModSounds.TFEO,
+            ModSounds.TTFA,
+    };
+
+    private static PositionedSoundInstance currentSound = null;
     private static int musicTimer = 0;
 
     public static void register() {
-
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-
-            if (client.player == null || client.world == null) {
+            boolean inGame = client.player != null && client.world != null;
+            if (currentSound != null &&
+                    client.getSoundManager().isPlaying(currentSound)) {
                 return;
             }
 
@@ -26,18 +38,14 @@ public class ModMusicPlayer {
                 return;
             }
 
-            if (client.getSoundManager().isPlaying(
-                    PositionedSoundInstance.music(ModSounds.BJE)
-            )) {
-                return;
-            }
+            if (RANDOM.nextInt(1000) == 0) {
 
-            if (RANDOM.nextInt(6000) == 0) {
-
-                client.getSoundManager().play(
-                        PositionedSoundInstance.music(ModSounds.BJE)
-                );
-                musicTimer = 12000;
+                SoundEvent track = MUSIC_TRACKS[
+                        RANDOM.nextInt(MUSIC_TRACKS.length)
+                        ];
+                currentSound = PositionedSoundInstance.music(track);
+                client.getSoundManager().play(currentSound);
+                musicTimer = 6000;
             }
         });
     }

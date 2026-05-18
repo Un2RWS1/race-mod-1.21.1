@@ -1,26 +1,28 @@
 package net.un2rws1.racemod;
 
+import com.mojang.brigadier.Command;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
-import net.minecraft.registry.tag.BiomeTags;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.un2rws1.racemod.classsystem.ClassAttachmentTypes;
 import net.un2rws1.racemod.classsystem.PlayerClass;
 import net.un2rws1.racemod.client.ClientClassState;
+import net.un2rws1.racemod.client.ModMusicPlayer;
 import net.un2rws1.racemod.client.screen.ClassSelectionScreen;
 import net.minecraft.client.MinecraftClient;
 import net.un2rws1.racemod.entity.ModEntities;
@@ -29,7 +31,9 @@ import net.un2rws1.racemod.item.ModItems;
 import net.un2rws1.racemod.mixin.client.GameRendererAccessor;
 import net.un2rws1.racemod.network.MuslimRitualPayload;
 import net.un2rws1.racemod.networking.*;
+import net.un2rws1.racemod.sound.ModSounds;
 import org.lwjgl.glfw.GLFW;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 
 
 public class RacemodClient implements ClientModInitializer{
@@ -41,10 +45,29 @@ public class RacemodClient implements ClientModInitializer{
 
     @Override
     public void onInitializeClient() {
+            ModMusicPlayer.register();
             EntityRendererRegistry.register(ModEntities.POOP, FlyingItemEntityRenderer::new);
             ClassAttachmentTypes.init();
             ModNetworking.register();
             PlayerJoinHandler.register();
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+            dispatcher.register(literal("testmusic")
+                    .executes(context -> {
+                        MinecraftClient client = MinecraftClient.getInstance();
+                        if (client.player != null) {
+                            client.getSoundManager().play(
+                                    PositionedSoundInstance.record(
+                                            ModSounds.EFN,
+                                            client.player.getPos()
+                                    )
+                            );
+
+                            client.player.sendMessage(Text.literal("Testing EFN music"), false);
+                        }
+
+                        return Command.SINGLE_SUCCESS;
+                    }));
+        });
         stealKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.racemod.steal",
                 InputUtil.Type.KEYSYM,

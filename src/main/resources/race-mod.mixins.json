@@ -32,7 +32,9 @@
 		"NetherPortalBlockMixin",
 		"CraftingResultSlotMixin",
 		"CraftingScreenHandlerMixin",
-		"PlayerScreenHandlerMixin"
+		"PlayerScreenHandlerMixin",
+		"client.MusicTrackerMixin"
+
 	],
 
 	"injectors": {
