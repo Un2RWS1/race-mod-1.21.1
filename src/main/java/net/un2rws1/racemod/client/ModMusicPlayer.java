@@ -45,7 +45,7 @@ public class ModMusicPlayer {
                         ];
                 currentSound = PositionedSoundInstance.music(track);
                 client.getSoundManager().play(currentSound);
-                musicTimer = 1000;
+                musicTimer = 3000;
             }
         });
     }
